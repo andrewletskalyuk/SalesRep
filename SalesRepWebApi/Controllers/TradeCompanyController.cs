@@ -1,35 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
 using SalesRepServices.Services_ForSalesRep;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class TradeOrderController : ControllerBase
+    public class TradeCompanyController : ControllerBase
     {
         private readonly EFContext _context;
         private readonly ReportsStatic _report;
-        public TradeOrderController(EFContext context)
+        public TradeCompanyController(EFContext context)
         {
             _context = context;
             _report = new ReportsStatic();
         }
 
-        [HttpGet("GetTradeOrderById")]
-        public IActionResult GetTradeOrder(int id)
+        [HttpGet("GetById")]
+        public IActionResult GetById(int id)
         {
             try
             {
                 if (id > 0)
                 {
-                    var res = _context.TradeOrders.FirstOrDefault(x => x.CustomerID == id);
+                    var res = _context.Trades.FirstOrDefault(x => x.TradeCompanyID == id);
                     if (res != null)
                     {
                         return Ok(res);
@@ -44,30 +44,26 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetOrdersByCustomer")]
-        public IActionResult Get(string titleOfCustomer)
+        [HttpGet("GetTradeCompanyByTitle")]
+        public IActionResult GetByTitle(string title)
         {
             try
             {
-                if (!String.IsNullOrEmpty(titleOfCustomer))
+                if (!String.IsNullOrEmpty(title))
                 {
-                    var res = _context.TradeOrders
-                                .Where(p => _context.Customers
-                                            .Any(z => p.CustomerID == z.CusomerID &&
-                                                 z.Title == titleOfCustomer)).ToList();
-                    if (res!=null)
+                    var res = _context.Trades.FirstOrDefault(x => x.Title == title);
+                    if (res != null)
                     {
                         return Ok(res);
                     }
                 }
-                throw new ArgumentException("Huston we have a problem");
+                throw new ArgumentException("Huston we have a problem!");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _report.AnotherExeption(e);
+                _report.AnotherExeption(ex);
             }
             return BadRequest();
         }
-
     }
 }

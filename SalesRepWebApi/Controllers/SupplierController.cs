@@ -44,26 +44,26 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        //[HttpGet("GetByTitle")]
-        //public IActionResult GetByTitle(string title)
-        //{
-            //try
-            //{
-            //    if (!String.IsNullOrEmpty(title))
-            //    {
-            //        var res = _context.Suppliers.FirstOrDefault(x => x. == title);
-            //        if (res != null)
-            //        {
-            //            return Ok(res);
-            //        }
-            //    }
-            //    throw new ArgumentException("Huston we have a problem!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    _report.AnotherExeption(ex);
-            //}
-            //return BadRequest();
-        //}
+        [HttpGet("GetByTitle")]
+        public IActionResult GetByTitle(string title)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(title))
+                {
+                    var res = _context.Suppliers.FirstOrDefault(x => x.Title == title);
+                    if (res != null)
+                    {
+                        return Ok(res);
+                    }
+                }
+                throw new ArgumentException("Huston we have a problem!");
+            }
+            catch (Exception ex)
+            {
+                _report.AnotherExeption(ex);
+            }
+            return BadRequest();
+        }
     }
 }

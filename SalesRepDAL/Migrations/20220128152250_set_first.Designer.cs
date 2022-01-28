@@ -10,8 +10,8 @@ using SalesRepDAL;
 namespace SalesRepDAL.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20220128100452_salesrep_first")]
-    partial class salesrep_first
+    [Migration("20220128152250_set_first")]
+    partial class set_first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -358,6 +358,10 @@ namespace SalesRepDAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(22)")
                         .HasMaxLength(22);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SupplierID");
 

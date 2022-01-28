@@ -103,7 +103,7 @@ namespace SalesRepWebApi
             });
 
             //seeder
-            SeedDataToDB.SeedData(app.ApplicationServices);
+            //SeedDataToDB.SeedData(app.ApplicationServices);
         }
     }
 }
