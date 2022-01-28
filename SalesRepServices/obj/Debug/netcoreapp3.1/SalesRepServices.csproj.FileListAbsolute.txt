@@ -1,0 +1,13 @@
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\bin\Debug\netcoreapp3.1\SalesRepServices.deps.json
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\bin\Debug\netcoreapp3.1\SalesRepServices.dll
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\bin\Debug\netcoreapp3.1\SalesRepServices.pdb
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\bin\Debug\netcoreapp3.1\SalesRepDAL.dll
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\bin\Debug\netcoreapp3.1\SalesRepDAL.pdb
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.csproj.AssemblyReference.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.AssemblyInfoInputs.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.AssemblyInfo.cs
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.csproj.CoreCompileInputs.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.csproj.CopyComplete
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.dll
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepServices\obj\Debug\netcoreapp3.1\SalesRepServices.pdb

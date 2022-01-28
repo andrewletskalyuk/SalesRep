@@ -1,0 +1,10 @@
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\bin\Debug\netcoreapp3.1\SalesRepDAL.deps.json
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\bin\Debug\netcoreapp3.1\SalesRepDAL.dll
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\bin\Debug\netcoreapp3.1\SalesRepDAL.pdb
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.csproj.AssemblyReference.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.AssemblyInfoInputs.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.AssemblyInfo.cs
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.csproj.CoreCompileInputs.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.dll
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.pdb
