@@ -8,3 +8,6 @@ C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcore
 C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.dll
 C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.pdb
 C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.csproj.AssemblyReference.cache
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\bin\Debug\netcoreapp3.1\SalesRepDAL.runtimeconfig.json
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\bin\Debug\netcoreapp3.1\SalesRepDAL.runtimeconfig.dev.json
+C:\Users\Andrii_Letskaliuk\source\repos\SalesRepTC\SalesRepDAL\obj\Debug\netcoreapp3.1\SalesRepDAL.genruntimeconfig.cache

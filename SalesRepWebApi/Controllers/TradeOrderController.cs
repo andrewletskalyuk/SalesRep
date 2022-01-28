@@ -44,19 +44,19 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetOrdersByCustomer")]
-        public IActionResult Get(string title)
-        {
-            try
-            {
-                //var res = _context.TradeOrders
-            }
-            catch (Exception e)
-            {
-                _report.AnotherExeption(e);
-            }
-            return BadRequest();
-        }
+        //[HttpGet("GetOrdersByCustomer")]
+        //public IActionResult Get(string title)
+        //{
+        //    try
+        //    {
+        //        var res = _context.TradeOrders.SelectMany()
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        _report.AnotherExeption(e);
+        //    }
+        //    return BadRequest();
+        //}
 
     }
 }

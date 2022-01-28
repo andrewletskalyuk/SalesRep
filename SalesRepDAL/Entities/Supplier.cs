@@ -8,6 +8,8 @@ namespace SalesRepDAL.Entities
     {
         [Key]
         public int SupplierID { get; set; }
+        [Required]
+        public string Title { get; set; }
         public string Address { get; set; }
         [Required]
         [StringLength(22, MinimumLength = 10)]

@@ -19,7 +19,7 @@ namespace SalesRepWebApi.Controllers
             _report = new ReportsStatic();
         }
 
-        [HttpGet("getAllCustomers")]
+        [HttpGet("GetAllCustomers")]
         public IActionResult GetAll()
         {
             try
