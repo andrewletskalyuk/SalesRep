@@ -72,7 +72,7 @@ namespace SalesRepWebApi.Controllers
                 await _productService.AddProduct(productDTO);
                 return Ok();
             }
-            return BadRequest();//test
+            return BadRequest();//test1
         }
     }
 }
