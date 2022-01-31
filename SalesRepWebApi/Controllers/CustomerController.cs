@@ -38,7 +38,7 @@ namespace SalesRepWebApi.Controllers
             return collection;
         }
 
-        [HttpGet("GetCustomerByID")]
+        [HttpGet("GetCustomerByID/{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
         public async Task<ActionResult<CustomerDTO>> GetById(int id)
@@ -51,7 +51,7 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
 
-        [HttpDelete("DeleteCustomerByID")]
+        [HttpDelete("DeleteCustomerByID/{id}")]
         [Authorize]
         [ProducesResponseType(204)]
         public async Task<IActionResult> DeleteById(int id)
@@ -68,7 +68,7 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
         
-        [HttpPost("CreateCustomer")]
+        [HttpPost("CreateCustomer/{customerModel}")]
         [ProducesResponseType(200)]
         public async Task<ActionResult> CreateCustomer(CustomerDTO customerDTO)
         {

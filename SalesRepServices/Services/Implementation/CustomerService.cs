@@ -14,12 +14,14 @@ namespace SalesRepServices.Services.Implementation
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IConfigurationProvider _mappingConguration;
+        //private readonly IConfigurationProvider _mappingConguration;
         private readonly EFContext _context;
-        public CustomerService(IConfigurationProvider mapConfiguration, EFContext context)
+        private readonly IMapper _mapper;
+        public CustomerService(IConfigurationProvider mapConfiguration, EFContext context, IMapper mapper)
         {
-            _mappingConguration = mapConfiguration;
+            //_mappingConguration = mapConfiguration;
             _context = context;
+            _mapper = mapper;
         }
         
         public async Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
@@ -46,11 +48,11 @@ namespace SalesRepServices.Services.Implementation
             var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForDelete == null)
             {
-                return new OperationStatus() { WasSuccessful = false, Message="204" };
+                return new OperationStatus() { IsSuccess = false, Message="204" };
             }
             _context.Customers.Remove(customerForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { WasSuccessful = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
         public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomModel)
@@ -58,14 +60,19 @@ namespace SalesRepServices.Services.Implementation
             var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForUpdate == null)
             {
-                return null;
+                return null; //need add exception
             }
-            customerForUpdate.AdditionalInfo = updateCustomModel.AdditionalInfo;
-            customerForUpdate.Address = updateCustomModel.Address;
-            customerForUpdate.IsActive = updateCustomModel.IsActive;
-            customerForUpdate.Phone = updateCustomModel.Phone;
-            customerForUpdate.Title = updateCustomModel.Title;
-            _context.Customers.Update(customerForUpdate);
+            //customerForUpdate.AdditionalInfo = updateCustomModel.AdditionalInfo;
+            //customerForUpdate.Address = updateCustomModel.Address;
+            //customerForUpdate.IsActive = updateCustomModel.IsActive;
+            //customerForUpdate.Phone = updateCustomModel.Phone;
+            //customerForUpdate.Title = updateCustomModel.Title;
+            //var mapper = _mappingConguration.CreateMapper();
+            //var entity = mapper.Map<Customer>(updateCustomModel);
+            ////_context.Customers.Update(customerForUpdate);
+            //_context.Customers.Update(customerForUpdate);
+            var map = _mapper.Map<CustomerDTO, Customer>(updateCustomModel);
+            _context.Customers.Update(map);
             await _context.SaveChangesAsync();
             return updateCustomModel;
         }
@@ -78,9 +85,9 @@ namespace SalesRepServices.Services.Implementation
                 var entity = mapper.Map<Customer>(customerDTO);
                 _context.Customers.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { WasSuccessful = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true, Message = "200" };
             }
-            return new OperationStatus() { WasSuccessful = false, Message = "Huston we have a problem!!!" };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
     }
 }

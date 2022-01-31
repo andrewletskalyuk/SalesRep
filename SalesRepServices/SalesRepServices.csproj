@@ -13,4 +13,8 @@
     <ProjectReference Include="..\SalesRepDAL\SalesRepDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>

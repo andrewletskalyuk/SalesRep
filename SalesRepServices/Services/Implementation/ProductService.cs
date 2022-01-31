@@ -29,11 +29,11 @@ namespace SalesRepServices.Services.Implementation
             var productForDelete = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
             if (productForDelete==null)
             {
-                return new OperationStatus() { WasSuccessful = false, Message = "204" };
+                return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
             _context.Products.Remove(productForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { WasSuccessful = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
         public async Task<ProductDTO> GetById(int id)
         {
@@ -76,9 +76,9 @@ namespace SalesRepServices.Services.Implementation
                 var entity = mapper.Map<Product>(productDTO);
                 _context.Products.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { Message = "200", WasSuccessful = true };
+                return new OperationStatus() { Message = "200", IsSuccess = true };
             }
-            return new OperationStatus() { WasSuccessful = false };
+            return new OperationStatus() { IsSuccess = false };
         }
 
         public async Task<ProductDTO> GetByTitle(string title)

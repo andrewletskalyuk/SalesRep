@@ -12,7 +12,7 @@ namespace SalesRepServices.MappingProfiles
         public CustomerProfile()
         {
             CreateMap<CustomerDTO, Customer>();
-            CreateMap<Customer, CustomerDTO>();
+            //CreateMap<Customer, CustomerDTO>();
         }
     }
 }
