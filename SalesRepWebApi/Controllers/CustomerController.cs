@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
+using SalesRepServices.Helpers;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Implementation;
 using SalesRepServices.Services.Interfaces;
@@ -17,14 +18,10 @@ namespace SalesRepWebApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        //private readonly EFContext _context;
         private readonly ReportsStatic _report;
         private readonly ICustomerService _customerServices;
-        public CustomerController(ICustomerService customerService
-            //                             ,EFContext context
-            )
+        public CustomerController(ICustomerService customerService)
         {
-            //_context = context;
             _report = new ReportsStatic();
             _customerServices = customerService;
         }
@@ -60,15 +57,27 @@ namespace SalesRepWebApi.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             await _customerServices.DeleteCustomerById(id);
-            return NoContent();
+            return Ok();
         }
 
         [HttpPut("UpdateCustomer")]
         [ProducesResponseType(200)]
-        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomerModel)
+        public async Task<IActionResult> UpdateAsync(int id, CustomerDTO updateCustomerModel)
         {
             var entity = await _customerServices.UpdateAsync(id, updateCustomerModel);
-            return entity;
+            return Ok(entity);
+        }
+        
+        [HttpPost("CreateCustomer")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> CreateCustomer(CustomerDTO customerDTO)
+        {
+            if (customerDTO != null)
+            {
+                await _customerServices.CreateCustomer(customerDTO);
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

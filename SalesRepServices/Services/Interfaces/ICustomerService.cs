@@ -1,4 +1,5 @@
-﻿using SalesRepServices.Models;
+﻿using SalesRepServices.Helpers;
+using SalesRepServices.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,8 +9,8 @@ namespace SalesRepServices.Services.Interfaces
     {
         Task<IEnumerable<CustomerDTO>> GetCustomersAsync();
         Task<CustomerDTO> GetById(int id);
-        Task DeleteCustomerById(int id);
+        Task<OperationStatus> DeleteCustomerById(int id);
         Task<CustomerDTO> UpdateAsync(int id, CustomerDTO modelCustomerDTO);
-        Task CreateCustomer(CustomerDTO customerDTO);
+        Task<OperationStatus> CreateCustomer(CustomerDTO customerDTO);
     }
 }

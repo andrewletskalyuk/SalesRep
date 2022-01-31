@@ -3,8 +3,10 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
+using SalesRepServices.Helpers;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,6 +21,7 @@ namespace SalesRepServices.Services.Implementation
             _mappingConguration = mapConfiguration;
             _context = context;
         }
+        
         public async Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
         {
             var query = _context.Customers
@@ -37,15 +40,17 @@ namespace SalesRepServices.Services.Implementation
             var mapper = _mappingConguration.CreateMapper();
             return mapper.Map<CustomerDTO>(entity);
         }
-        public async Task DeleteCustomerById(int id)
+        
+        public async Task<OperationStatus> DeleteCustomerById(int id)
         {
             var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForDelete == null)
             {
-                return;
+                return new OperationStatus() { WasSuccessful = false, Message="204" };
             }
             _context.Customers.Remove(customerForDelete);
             await _context.SaveChangesAsync();
+            return new OperationStatus() { WasSuccessful = true, Message = "200" };
         }
 
         public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomModel)
@@ -55,14 +60,17 @@ namespace SalesRepServices.Services.Implementation
             {
                 return null;
             }
-            var mapper = _mappingConguration.CreateMapper();
-            var updatedModel = mapper.Map<Customer>(updateCustomModel);
-            _context.Customers.Update(updatedModel);
+            customerForUpdate.AdditionalInfo = updateCustomModel.AdditionalInfo;
+            customerForUpdate.Address = updateCustomModel.Address;
+            customerForUpdate.IsActive = updateCustomModel.IsActive;
+            customerForUpdate.Phone = updateCustomModel.Phone;
+            customerForUpdate.Title = updateCustomModel.Title;
+            _context.Customers.Update(customerForUpdate);
             await _context.SaveChangesAsync();
             return updateCustomModel;
         }
 
-        public async Task CreateCustomer(CustomerDTO customerDTO)
+        public async Task<OperationStatus> CreateCustomer(CustomerDTO customerDTO)
         {
             if (customerDTO != null)
             {
@@ -70,7 +78,9 @@ namespace SalesRepServices.Services.Implementation
                 var entity = mapper.Map<Customer>(customerDTO);
                 _context.Customers.Add(entity);
                 await _context.SaveChangesAsync();
+                return new OperationStatus() { WasSuccessful = true, Message = "200" };
             }
+            return new OperationStatus() { WasSuccessful = false, Message = "Huston we have a problem!!!" };
         }
     }
 }

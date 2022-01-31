@@ -1,4 +1,5 @@
-﻿using SalesRepServices.Models;
+﻿using SalesRepServices.Helpers;
+using SalesRepServices.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,9 @@ namespace SalesRepServices.Services.Interfaces
     {
         Task<IEnumerable<ProductDTO>> GetProductsAsync();
         Task<ProductDTO> GetById(int id);
-        Task DeleteProduct(int id);
+        Task<OperationStatus> DeleteProductById(int id);
         Task<ProductDTO> UpdateAsync(int id, ProductDTO productDTO);
+        Task<OperationStatus> AddProduct(ProductDTO productDTO);
+        Task<ProductDTO> GetByTitle(string title);
     }
 }

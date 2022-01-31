@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using System;
 using System.Collections.Generic;
@@ -14,54 +17,60 @@ namespace SalesRepWebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly EFContext _context;
         private readonly ReportsStatic _report;
-        public ProductController(EFContext context)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-            _context = context;
             _report = new ReportsStatic();
+            _productService = productService;
         }
 
         [HttpGet("GetProductById")]
-        public IActionResult GetById(int id)
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
-            try
+            var entity = await _productService.GetById(id);
+            if (entity == null)
             {
-                if (id>0)
-                {
-                    var res = _context.Products.FirstOrDefault(x => x.ProductID == id);
-                    if (res!=null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return NotFound();
             }
-            catch (Exception e)
-            {
-                _report.AnotherExeption(e);
-            }
-            return BadRequest();
+            return Ok(entity);
         }
 
         [HttpGet("GetProductByTitle")]
-        public IActionResult GetByTitle(string title)
+        public async Task<ActionResult<ProductDTO>> GetByTitle(string title)
         {
-            try
+            var entity = await _productService.GetByTitle(title);
+            if (entity==null)
             {
-                if (!String.IsNullOrEmpty(title))
-                {
-                    var res = _context.Products.FirstOrDefault(x => x.Title == title);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return NotFound();
             }
-            catch (Exception ex)
+            return Ok(entity);
+        }
+        [HttpDelete("DeleteProductById")]
+        [Authorize]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await _productService.DeleteProductById(id);
+            return NoContent();
+        }
+
+        [HttpPut("UpdateProduct")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> UpdateProduct(int id, ProductDTO productDTO)
+        {
+            var entity = await _productService.UpdateAsync(id, productDTO);
+            return Ok(entity);
+        }
+        
+        [HttpPost("AddProduct")]
+        public async Task<IActionResult> AddProduct(ProductDTO productDTO)
+        {
+            if (productDTO!=null)
             {
-                _report.AnotherExeption(ex);
+                await _productService.AddProduct(productDTO);
+                return Ok();
             }
             return BadRequest();
         }
