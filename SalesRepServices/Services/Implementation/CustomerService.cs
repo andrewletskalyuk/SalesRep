@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesRepDAL;
+using SalesRepDAL.Entities;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Implementation
@@ -22,7 +19,7 @@ namespace SalesRepServices.Services.Implementation
             _mappingConguration = mapConfiguration;
             _context = context;
         }
-        public async Task<IEnumerable<CustomerDTO>> GetAll()
+        public async Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
         {
             var query = _context.Customers
                             .ProjectTo<CustomerDTO>(_mappingConguration);
@@ -40,19 +37,30 @@ namespace SalesRepServices.Services.Implementation
             var mapper = _mappingConguration.CreateMapper();
             return mapper.Map<CustomerDTO>(entity);
         }
-
-        public async Task<CustomerResponseModel> UpdateAsync(int id, CustomerDTO updateTodoItemModel)
-        {
-            var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
-            var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<CustomerResponseModel>(customerForUpdate);
-        }
-
-        public async Task<BaseModel> DeleteCustomerById(int id)
+        public async Task DeleteCustomerById(int id)
         {
             var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c=>c.CusomerID == id);
-            var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<BaseModel>(customerForDelete);
+            if (customerForDelete==null)
+            {
+                return;
+            }
+            _context.Customers.Remove(customerForDelete);
+            await _context.SaveChangesAsync();
         }
+
+        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateTodoItemModel)
+        {
+            var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
+            if (customerForUpdate==null)
+            {
+                return null;
+            }
+            var mapper = _mappingConguration.CreateMapper();
+            var updatedModel = mapper.Map<Customer>(updateTodoItemModel);
+            _context.Update(updatedModel);
+            await _context.SaveChangesAsync();
+            return updateTodoItemModel;
+        }
+
     }
 }

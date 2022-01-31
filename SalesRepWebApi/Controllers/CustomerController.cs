@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Implementation;
@@ -16,74 +17,58 @@ namespace SalesRepWebApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly EFContext _context;
+        //private readonly EFContext _context;
         private readonly ReportsStatic _report;
         private readonly ICustomerService _customerServices;
-        public CustomerController(ICustomerService customerService, EFContext context)
+        public CustomerController(ICustomerService customerService
+            //                             ,EFContext context
+            )
         {
-            _context = context;
+            //_context = context;
             _report = new ReportsStatic();
             _customerServices = customerService;
         }
 
         [HttpGet("GetAllCustomers")]
-        public async Task<IEnumerable<CustomerDTO>> GetAll()
+        [ProducesResponseType(200)]
+        public async Task<Collection<CustomerDTO>> GetAllCustomers()
         {
-            var res = await _customerServices.GetAll();
-            return Ok();
+            var customersDTO = await _customerServices.GetCustomersAsync();
+            var collection = new Collection<CustomerDTO>
+            {
+                Value = customersDTO.ToArray()
+            };
+            return collection;
         }
 
-        [HttpGet("{customerId}",Name ="GetCustomerByID")]
+        [HttpGet("GetCustomerByID")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
         public async Task<ActionResult<CustomerDTO>> GetById(int id)
         {
             var entity = await _customerServices.GetById(id);
-            if (entity==null)
+            if (entity == null)
             {
                 return NotFound();
             }
             return Ok(entity);
-            //try
-            //{
-            //    if (id > 0)
-            //    {
-            //        var res = _context.Customers.FirstOrDefault(x => x.CusomerID == id);
-            //        if (res != null)
-            //        {
-            //            return Ok(res);
-            //        }
-            //    }
-            //    throw new ArgumentException("Huston we have a problem!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    _report.AnotherExeption(ex);
-            //}
-            //return BadRequest();
         }
 
-        //[HttpGet("GetByTitle")]
-        //public IActionResult GetByTitle(string title)
-        //{
-        //    try
-        //    {
-        //        if (!String.IsNullOrEmpty(title))
-        //        {
-        //            var res = _context.Customers.FirstOrDefault(x => x.Title == title);
-        //            if (res != null)
-        //            {
-        //                return Ok(res);
-        //            }
-        //        }
-        //        throw new ArgumentException("Huston we have a problem!");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _report.AnotherExeption(ex);
-        //    }
-        //    return BadRequest();
-        //}
+        [HttpDelete("DeleteCustomerByID")]
+        [Authorize]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            await _customerServices.DeleteCustomerById(id);
+            return NoContent();
+        }
 
+        [HttpPut("UpdateCustomer")]
+        [ProducesResponseType(200)]
+        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomerModel)
+        {
+            var entity = await _customerServices.UpdateAsync(id, updateCustomerModel);
+            return entity;
+        }
     }
 }

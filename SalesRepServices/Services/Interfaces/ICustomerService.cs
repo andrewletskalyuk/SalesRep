@@ -8,9 +8,9 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<IEnumerable<CustomerDTO>> GetAll();
+        Task<IEnumerable<CustomerDTO>> GetCustomersAsync();
         Task<CustomerDTO> GetById(int id);
-        Task<CustomerResponseModel> UpdateAsync(int id, CustomerDTO updateTodoItemModel);
-        Task<BaseModel> DeleteCustomerById(int id);
+        Task DeleteCustomerById(int id);
+        Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateTodoItemModel);
     }
 }

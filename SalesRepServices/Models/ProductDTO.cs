@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SalesRepDAL.Models
+namespace SalesRepServices.Models
 {
-    //temp => 
-    public class OperationModels
+    public class ProductDTO
     {
+
     }
 }
