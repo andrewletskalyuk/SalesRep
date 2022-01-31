@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Implementation;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
 {
@@ -13,93 +18,72 @@ namespace SalesRepWebApi.Controllers
     {
         private readonly EFContext _context;
         private readonly ReportsStatic _report;
-        public CustomerController(EFContext context)
+        private readonly ICustomerService _customerServices;
+        public CustomerController(ICustomerService customerService, EFContext context)
         {
             _context = context;
             _report = new ReportsStatic();
+            _customerServices = customerService;
         }
 
         [HttpGet("GetAllCustomers")]
-        public IActionResult GetAll()
+        public async Task<IEnumerable<CustomerDTO>> GetAll()
         {
-            try
-            {
-                var res = _context.Customers.OrderBy(x => x.IsActive).ToList();
-                if (res != null)
-                {
-                    return Ok(res);
-                }
-            }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
-                return BadRequest(ex.Message);
-            }
-            return BadRequest();
+            var res = await _customerServices.GetAll();
+            return Ok();
         }
 
-        [HttpGet("GetCustomerByID")]
-        public IActionResult GetById(int id)
+        [HttpGet("{customerId}",Name ="GetCustomerByID")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<CustomerDTO>> GetById(int id)
         {
-            try
+            var entity = await _customerServices.GetById(id);
+            if (entity==null)
             {
-                if (id > 0)
-                {
-                    var res = _context.Customers.FirstOrDefault(x => x.CusomerID == id);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
-            }
-            return BadRequest();
+            return Ok(entity);
+            //try
+            //{
+            //    if (id > 0)
+            //    {
+            //        var res = _context.Customers.FirstOrDefault(x => x.CusomerID == id);
+            //        if (res != null)
+            //        {
+            //            return Ok(res);
+            //        }
+            //    }
+            //    throw new ArgumentException("Huston we have a problem!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    _report.AnotherExeption(ex);
+            //}
+            //return BadRequest();
         }
 
-        [HttpGet("GetByTitle")]
-        public IActionResult GetByTitle(string title)
-        {
-            try
-            {
-                if (!String.IsNullOrEmpty(title))
-                {
-                    var res = _context.Customers.FirstOrDefault(x => x.Title == title);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
-            }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
-            }
-            return BadRequest();
-        }
-
-        #region for another time
-        //// POST api/<CustomerController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
+        //[HttpGet("GetByTitle")]
+        //public IActionResult GetByTitle(string title)
         //{
+        //    try
+        //    {
+        //        if (!String.IsNullOrEmpty(title))
+        //        {
+        //            var res = _context.Customers.FirstOrDefault(x => x.Title == title);
+        //            if (res != null)
+        //            {
+        //                return Ok(res);
+        //            }
+        //        }
+        //        throw new ArgumentException("Huston we have a problem!");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _report.AnotherExeption(ex);
+        //    }
+        //    return BadRequest();
         //}
 
-        //// PUT api/<CustomerController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<CustomerController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //} 
-        #endregion
     }
 }

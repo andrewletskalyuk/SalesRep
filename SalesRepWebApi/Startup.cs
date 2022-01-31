@@ -10,8 +10,11 @@ using Microsoft.IdentityModel.Tokens;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
 using SalesRepDAL.Seeders;
+using SalesRepServices.Services.Implementation;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using SalesRepServices.Services_Interfaces;
+using System;
 using System.Text;
 
 namespace SalesRepWebApi
@@ -31,6 +34,7 @@ namespace SalesRepWebApi
             services.AddControllers();
             services.AddScoped<EFContext>();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            //we're using in memory database for a quick dev and testing
             services.AddDbContext<EFContext>(options =>
                         options.UseSqlServer(connectionString));
             services.AddIdentity<DbUser, DbRole>(options =>
@@ -65,7 +69,12 @@ namespace SalesRepWebApi
                 };
             });
 
+            //added new service for work with Customer
+            services.AddScoped<ICustomerService,CustomerService>();
+            
             services.AddSwaggerGen();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
