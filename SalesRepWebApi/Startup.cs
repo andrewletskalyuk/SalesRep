@@ -69,9 +69,11 @@ namespace SalesRepWebApi
                 };
             });
 
-            //added new service for work with Customer
+            //Customer service
             services.AddScoped<ICustomerService,CustomerService>();
-            
+            //Product service
+            services.AddScoped<IProductService, ProductService>();
+
             services.AddSwaggerGen();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

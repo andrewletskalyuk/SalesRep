@@ -39,8 +39,8 @@ namespace SalesRepServices.Services.Implementation
         }
         public async Task DeleteCustomerById(int id)
         {
-            var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c=>c.CusomerID == id);
-            if (customerForDelete==null)
+            var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
+            if (customerForDelete == null)
             {
                 return;
             }
@@ -48,19 +48,29 @@ namespace SalesRepServices.Services.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateTodoItemModel)
+        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomModel)
         {
             var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
-            if (customerForUpdate==null)
+            if (customerForUpdate == null)
             {
                 return null;
             }
             var mapper = _mappingConguration.CreateMapper();
-            var updatedModel = mapper.Map<Customer>(updateTodoItemModel);
-            _context.Update(updatedModel);
+            var updatedModel = mapper.Map<Customer>(updateCustomModel);
+            _context.Customers.Update(updatedModel);
             await _context.SaveChangesAsync();
-            return updateTodoItemModel;
+            return updateCustomModel;
         }
 
+        public async Task CreateCustomer(CustomerDTO customerDTO)
+        {
+            if (customerDTO != null)
+            {
+                var mapper = _mappingConguration.CreateMapper();
+                var entity = mapper.Map<Customer>(customerDTO);
+                _context.Customers.Add(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
