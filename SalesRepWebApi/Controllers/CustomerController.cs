@@ -18,22 +18,20 @@ namespace SalesRepWebApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly ReportsStatic _report;
         private readonly ICustomerService _customerServices;
         public CustomerController(ICustomerService customerService)
         {
-            _report = new ReportsStatic();
             _customerServices = customerService;
         }
 
         [HttpGet("GetAllCustomers")]
         [ProducesResponseType(200)]
-        public async Task<Collection<CustomerDTO>> GetAllCustomers()
+        public async Task<Collection<CustomerViewModel>> GetAllCustomers()
         {
-            var customersDTO = await _customerServices.GetCustomersAsync();
-            var collection = new Collection<CustomerDTO>
+            var customersViewModels = await _customerServices.GetCustomersAsync();
+            var collection = new Collection<CustomerViewModel>
             {
-                Value = customersDTO.ToArray()
+                Value = customersViewModels.ToArray()
             };
             return collection;
         }
@@ -41,7 +39,7 @@ namespace SalesRepWebApi.Controllers
         [HttpGet("GetCustomerByID/{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<CustomerDTO>> GetById(int id)
+        public async Task<ActionResult<CustomerViewModel>> GetById(int id)
         {
             var entity = await _customerServices.GetById(id);
             if (entity == null)
@@ -62,7 +60,7 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateCustomer")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateAsync(int id, CustomerDTO updateCustomerModel)
+        public async Task<IActionResult> UpdateAsync(int id, CustomerViewModel updateCustomerModel)
         {
             var entity = await _customerServices.UpdateAsync(id, updateCustomerModel);
             return Ok(entity);
@@ -70,7 +68,7 @@ namespace SalesRepWebApi.Controllers
         
         [HttpPost("CreateCustomer/{customerModel}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> CreateCustomer(CustomerDTO customerDTO)
+        public async Task<ActionResult> CreateCustomer(CustomerViewModel customerDTO)
         {
             if (customerDTO != null)
             {

@@ -35,7 +35,7 @@ namespace SalesRepServices.Services.Implementation
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
-        public async Task<ProductDTO> GetById(int id)
+        public async Task<ProductViewModel> GetById(int id)
         {
             var entity = await _context.Products
                               .SingleOrDefaultAsync(x => x.ProductID == id);
@@ -44,15 +44,15 @@ namespace SalesRepServices.Services.Implementation
                 return null;
             }
             var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<ProductDTO>(entity);
+            return mapper.Map<ProductViewModel>(entity);
         }
-        public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
+        public async Task<IEnumerable<ProductViewModel>> GetProductsAsync()
         {
             var query = _context.Products
-                        .ProjectTo<ProductDTO>(_mappingConguration);
+                        .ProjectTo<ProductViewModel>(_mappingConguration);
             return await query.ToArrayAsync();
         }
-        public async Task<ProductDTO> UpdateAsync(int id, ProductDTO productDTO)
+        public async Task<ProductViewModel> UpdateAsync(int id, ProductViewModel productDTO)
         {
             var productForUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
             if (productForUpdate==null)
@@ -68,7 +68,7 @@ namespace SalesRepServices.Services.Implementation
             await _context.SaveChangesAsync();
             return productDTO;
         }
-        public async Task<OperationStatus> AddProduct(ProductDTO productDTO)
+        public async Task<OperationStatus> AddProduct(ProductViewModel productDTO)
         {
             if (productDTO!=null)
             {
@@ -81,7 +81,7 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = false };
         }
 
-        public async Task<ProductDTO> GetByTitle(string title)
+        public async Task<ProductViewModel> GetByTitle(string title)
         {
             var entity = await _context.Products
                         .SingleOrDefaultAsync(x => x.Title == title);
@@ -90,7 +90,7 @@ namespace SalesRepServices.Services.Implementation
                 return null;
             }
             var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<ProductDTO>(entity);
+            return mapper.Map<ProductViewModel>(entity);
         }
     }
 }

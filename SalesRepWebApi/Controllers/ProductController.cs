@@ -28,7 +28,7 @@ namespace SalesRepWebApi.Controllers
         [HttpGet("GetProductById")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<ProductDTO>> GetById(int id)
+        public async Task<ActionResult<ProductViewModel>> GetById(int id)
         {
             var entity = await _productService.GetById(id);
             if (entity == null)
@@ -39,7 +39,7 @@ namespace SalesRepWebApi.Controllers
         }
 
         [HttpGet("GetProductByTitle")]
-        public async Task<ActionResult<ProductDTO>> GetByTitle(string title)
+        public async Task<ActionResult<ProductViewModel>> GetByTitle(string title)
         {
             var entity = await _productService.GetByTitle(title);
             if (entity==null)
@@ -58,14 +58,14 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateProduct")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateProduct(int id, ProductDTO productDTO)
+        public async Task<IActionResult> UpdateProduct(int id, ProductViewModel productDTO)
         {
             var entity = await _productService.UpdateAsync(id, productDTO);
             return Ok(entity);
         }
         
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductDTO productDTO)
+        public async Task<IActionResult> AddProduct(ProductViewModel productDTO)
         {
             if (productDTO!=null)
             {

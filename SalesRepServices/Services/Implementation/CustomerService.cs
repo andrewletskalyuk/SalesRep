@@ -14,24 +14,23 @@ namespace SalesRepServices.Services.Implementation
 {
     public class CustomerService : ICustomerService
     {
-        //private readonly IConfigurationProvider _mappingConguration;
+        private readonly IConfigurationProvider _mappingConguration;
         private readonly EFContext _context;
         private readonly IMapper _mapper;
-        public CustomerService(IConfigurationProvider mapConfiguration, EFContext context, IMapper mapper)
+        public CustomerService(EFContext context, IMapper mapper, IConfigurationProvider mapConfiguration)
         {
-            //_mappingConguration = mapConfiguration;
+            _mappingConguration = mapConfiguration;
             _context = context;
             _mapper = mapper;
         }
         
-        public async Task<IEnumerable<CustomerDTO>> GetCustomersAsync()
+        public async Task<IEnumerable<CustomerViewModel>> GetCustomersAsync()
         {
-            var query = _context.Customers
-                            .ProjectTo<CustomerDTO>(_mappingConguration);
+            var query = _context.Customers.ProjectTo<CustomerViewModel>(_mappingConguration);
             return await query.ToArrayAsync();
         }
 
-        public async Task<CustomerDTO> GetById(int id)
+        public async Task<CustomerViewModel> GetById(int id)
         {
             var entity = await _context.Customers
                              .SingleOrDefaultAsync(x => x.CusomerID == id);
@@ -40,7 +39,7 @@ namespace SalesRepServices.Services.Implementation
                 return null;
             }
             var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<CustomerDTO>(entity);
+            return mapper.Map<CustomerViewModel>(entity);
         }
         
         public async Task<OperationStatus> DeleteCustomerById(int id)
@@ -55,29 +54,20 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<CustomerDTO> UpdateAsync(int id, CustomerDTO updateCustomModel)
+        public async Task<OperationStatus> UpdateAsync(int id, CustomerViewModel updateCustomModel)
         {
             var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForUpdate == null)
             {
-                return null; //need add exception
+                return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            //customerForUpdate.AdditionalInfo = updateCustomModel.AdditionalInfo;
-            //customerForUpdate.Address = updateCustomModel.Address;
-            //customerForUpdate.IsActive = updateCustomModel.IsActive;
-            //customerForUpdate.Phone = updateCustomModel.Phone;
-            //customerForUpdate.Title = updateCustomModel.Title;
-            //var mapper = _mappingConguration.CreateMapper();
-            //var entity = mapper.Map<Customer>(updateCustomModel);
-            ////_context.Customers.Update(customerForUpdate);
-            //_context.Customers.Update(customerForUpdate);
-            var map = _mapper.Map<CustomerDTO, Customer>(updateCustomModel);
+            var map = _mapper.Map<CustomerViewModel,Customer>(updateCustomModel,customerForUpdate);
             _context.Customers.Update(map);
             await _context.SaveChangesAsync();
-            return updateCustomModel;
+            return new OperationStatus() { IsSuccess = true, Message = "200"};
         }
 
-        public async Task<OperationStatus> CreateCustomer(CustomerDTO customerDTO)
+        public async Task<OperationStatus> CreateCustomer(CustomerViewModel customerDTO)
         {
             if (customerDTO != null)
             {

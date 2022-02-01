@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class CustomerDTO
+    public class CustomerViewModel
     {
         public string Title { get; set; }
         public string Address { get; set; }
@@ -14,5 +14,4 @@ namespace SalesRepServices.Models
         public string Phone { get; set; }
         public string AdditionalInfo { get; set; }
     }
-    public class CustomerResponseModel : BaseModel { }
 }

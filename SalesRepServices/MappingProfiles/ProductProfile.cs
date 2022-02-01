@@ -11,8 +11,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public ProductProfile()
         {
-            CreateMap<ProductDTO, Product>();
-            CreateMap<Product, ProductDTO>();
+            CreateMap<ProductViewModel, Product>();
+            CreateMap<Product, ProductViewModel>();
         }
     }
 }
