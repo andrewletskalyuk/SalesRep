@@ -1,66 +1,67 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SalesRepController : ControllerBase
     {
         private readonly EFContext _context;
-        private readonly ReportsStatic _report;
-        public SalesRepController(EFContext context)
+        private readonly ISalesRepService _salesRepService;
+        public SalesRepController(EFContext context, ISalesRepService salesRepService)
         {
             _context = context;
-            _report = new ReportsStatic();
+            _salesRepService = salesRepService;
         }
-        [HttpGet("GetSalesRepByID")]
-        public IActionResult GetById(int id)
+
+        [HttpPost("CreateSalesRep")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CreateSalesRep(SalesRepViewModel salesRepViewModel)
         {
-            try
+            if (salesRepViewModel != null)
             {
-                if (id > 0)
-                {
-                    var res = _context.SaleRep.FirstOrDefault(x => x.SaleRepID == id);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
-            }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
+                await _salesRepService.CreateRep(salesRepViewModel);
+                return Ok();
             }
             return BadRequest();
         }
-        [HttpGet("GetByName")]
-        public IActionResult GetByName(string name)
+
+        [HttpGet("GetRepByName/{name}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<SalesRepViewModel>> GetRepByName(string name)
         {
-            try
+            var entity = await _salesRepService.GetByName(name);
+            if (entity != null)
             {
-                if (!String.IsNullOrEmpty(name))
-                {
-                    var res = _context.SaleRep
-                                .Select(x => x)
-                                .Where(x => x.FullName.Contains(name))
-                                .ToList();
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return Ok(entity);
             }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
-            }
-            return BadRequest();
+            return NotFound();
+        }
+
+        [HttpPut("UpdateSalesRep")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> Update(int id, SalesRepViewModel salesRepViewModel)
+        {
+            var entity = await _salesRepService.Update(id, salesRepViewModel);
+            return Ok(entity);
+        }
+
+        [HttpDelete("DeleteSalesRepByName/{fullname}")]
+        public async Task<IActionResult> Delete(string fullname)
+        {
+            await _salesRepService.DeleteByName(fullname);
+            return Ok();
         }
     }
 }
+

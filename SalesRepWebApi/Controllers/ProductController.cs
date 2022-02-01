@@ -49,7 +49,7 @@ namespace SalesRepWebApi.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             await _productService.DeleteProductById(id);
-            return NoContent();
+            return Ok();
         }
 
         [HttpPut("UpdateProduct")]
@@ -61,6 +61,7 @@ namespace SalesRepWebApi.Controllers
         }
         
         [HttpPost("AddProduct/{productModel}")]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> AddProduct(ProductViewModel productViewModel)
         {
             if (productViewModel!=null)
@@ -68,7 +69,7 @@ namespace SalesRepWebApi.Controllers
                 await _productService.AddProduct(productViewModel);
                 return Ok();
             }
-            return BadRequest();//test1
+            return BadRequest();
         }
     }
 }

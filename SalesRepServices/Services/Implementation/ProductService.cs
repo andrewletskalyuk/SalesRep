@@ -76,7 +76,6 @@ namespace SalesRepServices.Services.Implementation
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
-
         public async Task<ProductViewModel> GetByTitle(string title)
         {
             var entity = await _context.Products
