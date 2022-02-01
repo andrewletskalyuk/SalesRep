@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,53 +16,45 @@ namespace SalesRepWebApi.Controllers
     public class SupplierController : ControllerBase
     {
         private readonly EFContext _context;
-        private readonly ReportsStatic _report;
-        public SupplierController(EFContext context)
+        private readonly ISupplierService _supplierService;
+        public SupplierController(EFContext context, ISupplierService salesRepService)
         {
             _context = context;
-            _report = new ReportsStatic();
+            _supplierService = salesRepService;
         }
 
-        [HttpGet("GetSupplierByID")]
-        public IActionResult GetById(int id)
+        [HttpPost("CreateSupplier")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CreateSupplier(SupplierViewModel supplierViewModel)
         {
-            try
+            if (supplierViewModel != null)
             {
-                if (id > 0)
-                {
-                    var res = _context.Suppliers.FirstOrDefault(x => x.SupplierID == id);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
-            }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
+                await _supplierService.CreateSupplier(supplierViewModel);
+                return Ok();
             }
             return BadRequest();
         }
 
-        [HttpGet("GetByTitle")]
-        public IActionResult GetByTitle(string title)
+        [HttpGet("GetSupplierByName/{name}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<SupplierViewModel>> GetSupByName(string title)
         {
-            try
+            var entity = await _supplierService.GetByName(title);
+            if (entity != null)
             {
-                if (!String.IsNullOrEmpty(title))
-                {
-                    var res = _context.Suppliers.FirstOrDefault(x => x.Title == title);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return Ok();
             }
-            catch (Exception ex)
+            return NotFound();
+        }
+
+        [HttpGet("GetSuppWithProducts")]
+        public async Task<ActionResult<SupplierViewModel>> GetSupWithProducts(string supplierTitle)
+        {
+            var array = await _supplierService.GetSupplierWithProducts(supplierTitle);
+            if (array!=null)
             {
-                _report.AnotherExeption(ex);
+                return Ok();
             }
             return BadRequest();
         }
