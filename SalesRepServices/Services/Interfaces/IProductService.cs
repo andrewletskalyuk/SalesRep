@@ -7,11 +7,11 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductViewModel>> GetProductsAsync();
         Task<ProductViewModel> GetById(int id);
-        Task<OperationStatus> DeleteProductById(int id);
-        Task<ProductViewModel> UpdateAsync(int id, ProductViewModel productDTO);
-        Task<OperationStatus> AddProduct(ProductViewModel productDTO);
         Task<ProductViewModel> GetByTitle(string title);
+        Task<OperationStatus> DeleteProductById(int id);
+        Task<IEnumerable<ProductViewModel>> GetProductsAsync();
+        Task<OperationStatus> UpdateAsync(int id, ProductViewModel productDTO);
+        Task<OperationStatus> AddProduct(ProductViewModel productDTO);
     }
 }

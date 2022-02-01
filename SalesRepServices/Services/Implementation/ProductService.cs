@@ -6,10 +6,7 @@ using SalesRepDAL.Entities;
 using SalesRepServices.Helpers;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Implementation
@@ -18,11 +15,14 @@ namespace SalesRepServices.Services.Implementation
     {
         private readonly IConfigurationProvider _mappingConguration;
         private readonly EFContext _context;
+        private readonly IMapper _mapper;
         
-        public ProductService(IConfigurationProvider mapConfiguration, EFContext context)
+        public ProductService(IConfigurationProvider mapConfiguration, 
+                EFContext context, IMapper mapper)
         {
             _mappingConguration = mapConfiguration;
             _context = context;
+            _mapper = mapper;
         }
         public async Task<OperationStatus> DeleteProductById(int id)
         {
@@ -52,33 +52,29 @@ namespace SalesRepServices.Services.Implementation
                         .ProjectTo<ProductViewModel>(_mappingConguration);
             return await query.ToArrayAsync();
         }
-        public async Task<ProductViewModel> UpdateAsync(int id, ProductViewModel productDTO)
+        public async Task<OperationStatus> UpdateAsync(int id, ProductViewModel productViewModel)
         {
             var productForUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
             if (productForUpdate==null)
             {
-                return null;
+                return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            productForUpdate.Title = productDTO.Title;
-            productForUpdate.QuantityInWarehouse = productDTO.QuantityInWarehouse;
-            productForUpdate.Price = productDTO.Price;
-            productForUpdate.Description = productDTO.Description;
-            productForUpdate.TotalSum = productDTO.TotalSum;
-            _context.Products.Update(productForUpdate);
+            var map = _mapper.Map<ProductViewModel, Product>(productViewModel, productForUpdate);
+            _context.Products.Update(map);
             await _context.SaveChangesAsync();
-            return productDTO;
+            return new OperationStatus() { IsSuccess=true, Message = "200"};
         }
-        public async Task<OperationStatus> AddProduct(ProductViewModel productDTO)
+        public async Task<OperationStatus> AddProduct(ProductViewModel productViewModel)
         {
-            if (productDTO!=null)
+            if (productViewModel!=null)
             {
                 var mapper = _mappingConguration.CreateMapper();
-                var entity = mapper.Map<Product>(productDTO);
+                var entity = mapper.Map<ProductViewModel,Product>(productViewModel);
                 _context.Products.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { Message = "200", IsSuccess = true };
             }
-            return new OperationStatus() { IsSuccess = false };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
 
         public async Task<ProductViewModel> GetByTitle(string title)
@@ -87,10 +83,10 @@ namespace SalesRepServices.Services.Implementation
                         .SingleOrDefaultAsync(x => x.Title == title);
             if (entity==null)
             {
-                return null;
+                return new ProductViewModel();
             }
-            var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<ProductViewModel>(entity);
+            return _mapper.Map<Product,ProductViewModel>(entity);
         }
+
     }
 }

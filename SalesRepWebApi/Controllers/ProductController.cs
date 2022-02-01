@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SalesRepDAL;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
@@ -25,7 +20,7 @@ namespace SalesRepWebApi.Controllers
             _productService = productService;
         }
 
-        [HttpGet("GetProductById")]
+        [HttpGet("GetProductById/{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
         public async Task<ActionResult<ProductViewModel>> GetById(int id)
@@ -48,7 +43,8 @@ namespace SalesRepWebApi.Controllers
             }
             return Ok(entity);
         }
-        [HttpDelete("DeleteProductById")]
+        
+        [HttpDelete("DeleteProductById/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -58,18 +54,18 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateProduct")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateProduct(int id, ProductViewModel productDTO)
+        public async Task<IActionResult> UpdateProduct(int id, ProductViewModel productViewModel)
         {
-            var entity = await _productService.UpdateAsync(id, productDTO);
+            var entity = await _productService.UpdateAsync(id, productViewModel);
             return Ok(entity);
         }
         
-        [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductViewModel productDTO)
+        [HttpPost("AddProduct/{productModel}")]
+        public async Task<IActionResult> AddProduct(ProductViewModel productViewModel)
         {
-            if (productDTO!=null)
+            if (productViewModel!=null)
             {
-                await _productService.AddProduct(productDTO);
+                await _productService.AddProduct(productViewModel);
                 return Ok();
             }
             return BadRequest();//test1

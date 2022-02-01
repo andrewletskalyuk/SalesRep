@@ -38,8 +38,7 @@ namespace SalesRepServices.Services.Implementation
             {
                 return null;
             }
-            var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<CustomerViewModel>(entity);
+            return _mapper.Map<Customer,CustomerViewModel>(entity);
         }
         
         public async Task<OperationStatus> DeleteCustomerById(int id)
@@ -54,25 +53,25 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<OperationStatus> UpdateAsync(int id, CustomerViewModel updateCustomModel)
+        public async Task<OperationStatus> UpdateAsync(int id, CustomerViewModel customerViewModel)
         {
             var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForUpdate == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<CustomerViewModel,Customer>(updateCustomModel,customerForUpdate);
+            var map = _mapper.Map<CustomerViewModel,Customer>(customerViewModel,customerForUpdate);
             _context.Customers.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200"};
         }
 
-        public async Task<OperationStatus> CreateCustomer(CustomerViewModel customerDTO)
+        public async Task<OperationStatus> CreateCustomer(CustomerViewModel customerViewModel)
         {
-            if (customerDTO != null)
+            if (customerViewModel != null)
             {
                 var mapper = _mappingConguration.CreateMapper();
-                var entity = mapper.Map<Customer>(customerDTO);
+                var entity = mapper.Map<CustomerViewModel,Customer>(customerViewModel);
                 _context.Customers.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
