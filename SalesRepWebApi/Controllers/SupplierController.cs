@@ -35,15 +35,15 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetSupplierByName")]
+        [HttpGet("GetSupplier/{name}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<SupplierViewModel>> GetSupByName(string title)
+        public async Task<ActionResult<SupplierViewModel>> GetSupplier(string title)
         {
-            var entity = await _supplierService.GetByName(title);
+            var entity = await _supplierService.GetByTitle(title);
             if (entity != null)
             {
-                return Ok();
+                return Ok(entity);
             }
             return NotFound();
         }
@@ -55,7 +55,7 @@ namespace SalesRepWebApi.Controllers
             var array = await _supplierService.GetSupplierWithProducts(supplierTitle);
             if (array!=null)
             {
-                return Ok();
+                return Ok(array);
             }
             return BadRequest();
         }
@@ -69,12 +69,12 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
 
-        [HttpDelete("DeleteSupplierRepByName")]
+        [HttpDelete("DeleteSupplier/{title}")]
         [ProducesResponseType(202)] //accepted
         [ProducesResponseType(204)] //no content
-        public async Task<IActionResult> Delete(string fullname)
+        public async Task<IActionResult> Delete(string title)
         {
-            await _supplierService.Delete(fullname);
+            await _supplierService.Delete(title);
             return Ok();
         }
     }

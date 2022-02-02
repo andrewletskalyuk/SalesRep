@@ -46,7 +46,7 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<SupplierViewModel> GetByName(string title)
+        public async Task<SupplierViewModel> GetByTitle(string title)
         {
             var entity = await _context.Suppliers
                         .SingleOrDefaultAsync(x => x.Title == title);
