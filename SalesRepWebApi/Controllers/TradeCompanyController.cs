@@ -1,69 +1,66 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
-using SalesRepServices.Services_ForSalesRep;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [ApiController]
+    [Authorize]
     public class TradeCompanyController : ControllerBase
     {
         private readonly EFContext _context;
-        private readonly ReportsStatic _report;
-        public TradeCompanyController(EFContext context)
+        private readonly ITradeCompanyService _tcService;
+        public TradeCompanyController(EFContext context, ITradeCompanyService tcService)
         {
             _context = context;
-            _report = new ReportsStatic();
+            _tcService = tcService;
         }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
+        [HttpPost("CreateCompany")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CreateCompany(TradeCompanyViewModel tcViewModel)
         {
-            try
+            if (tcViewModel!=null)
             {
-                if (id > 0)
-                {
-                    var res = _context.Trades.FirstOrDefault(x => x.TradeCompanyID == id);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
-            }
-            catch (Exception e)
-            {
-                _report.AnotherExeption(e);
+                await _tcService.CreateCompany(tcViewModel);
+                return Ok();
             }
             return BadRequest();
         }
 
-        [HttpGet("GetTradeCompanyByTitle")]
-        public IActionResult GetByTitle(string title)
+        [HttpDelete("DeleteCompany/{title}")]
+        [ProducesResponseType(202)] //accepted
+        [ProducesResponseType(204)] //no content
+        public async Task<IActionResult> DeleteCompany(string title)
         {
-            try
+            await _tcService.Delete(title);
+            return Ok();
+        }
+        
+        [HttpGet("GetCompanyByTitle/{title}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)] //No Content
+        public async Task<ActionResult<TradeCompanyViewModel>> GetByTitle(string title)
+        {
+            var res = await _tcService.GetCompanyByTitle(title);
+            if (res!=null)
             {
-                if (!String.IsNullOrEmpty(title))
-                {
-                    var res = _context.Trades.FirstOrDefault(x => x.Title == title);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
+                return Ok(res);
             }
-            catch (Exception ex)
-            {
-                _report.AnotherExeption(ex);
-            }
-            return BadRequest();
+            return NotFound();
+        }
+
+        [HttpPut("UpdateCompany")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> Update(int id, TradeCompanyViewModel tcViewModel)
+        {
+            var entity = await _tcService.Update(id, tcViewModel);
+            return Ok(entity);
         }
     }
 }

@@ -69,10 +69,12 @@ namespace SalesRepWebApi
                 };
             });
 
-            //Customer service
+            //services
             services.AddScoped<ICustomerService,CustomerService>();
-            //Product service
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISalesRepService, SalesRepService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<ITradeCompanyService, TradeCompanyService>();
 
             services.AddSwaggerGen();
 

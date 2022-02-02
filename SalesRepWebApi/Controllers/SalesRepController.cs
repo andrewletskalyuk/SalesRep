@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using SalesRepServices.Services_ForSalesRep;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
@@ -24,7 +21,8 @@ namespace SalesRepWebApi.Controllers
         }
 
         [HttpPost("CreateSalesRep")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)] //created
+        [ProducesResponseType(401)] //Unautorized
         public async Task<IActionResult> CreateSalesRep(SalesRepViewModel salesRepViewModel)
         {
             if (salesRepViewModel != null)
@@ -37,7 +35,7 @@ namespace SalesRepWebApi.Controllers
 
         [HttpGet("GetRepByName/{name}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(204)] //No Content
         public async Task<ActionResult<SalesRepViewModel>> GetRepByName(string name)
         {
             var entity = await _salesRepService.GetByName(name);
@@ -50,6 +48,7 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateSalesRep")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         public async Task<IActionResult> Update(int id, SalesRepViewModel salesRepViewModel)
         {
             var entity = await _salesRepService.Update(id, salesRepViewModel);
@@ -57,6 +56,8 @@ namespace SalesRepWebApi.Controllers
         }
 
         [HttpDelete("DeleteSalesRepByName/{fullname}")]
+        [ProducesResponseType(202)] //accepted
+        [ProducesResponseType(204)] //no content
         public async Task<IActionResult> Delete(string fullname)
         {
             await _salesRepService.DeleteByName(fullname);
