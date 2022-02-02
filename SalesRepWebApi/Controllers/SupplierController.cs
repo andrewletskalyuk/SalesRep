@@ -1,12 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SalesRepDAL;
-using SalesRepServices.Helpers;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using SalesRepServices.Services_ForSalesRep;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
@@ -15,11 +10,9 @@ namespace SalesRepWebApi.Controllers
     [Produces("application/json")]
     public class SupplierController : ControllerBase
     {
-        private readonly EFContext _context;
         private readonly ISupplierService _supplierService;
-        public SupplierController(EFContext context, ISupplierService salesRepService)
+        public SupplierController(ISupplierService salesRepService)
         {
-            _context = context;
             _supplierService = salesRepService;
         }
 

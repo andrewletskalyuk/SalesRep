@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SalesRepDAL;
-using SalesRepServices.Services_ForSalesRep;
+using SalesRepServices.Models;
+using SalesRepServices.Services.Interfaces;
+using SalesRepServices.Services_Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,63 +11,75 @@ namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [ApiController]
     public class TradeOrderController : ControllerBase
     {
-        private readonly EFContext _context;
-        private readonly ReportsStatic _report;
-        public TradeOrderController(EFContext context)
+        private readonly ITradeOrderService _tradeOrderService;
+        private readonly IReportsInLog _logs;
+        public TradeOrderController(IReportsInLog logs, ITradeOrderService tradeOrderService)
         {
-            _context = context;
-            _report = new ReportsStatic();
+            _tradeOrderService = tradeOrderService;
+            _logs = logs;
         }
 
-        [HttpGet("GetTradeOrderById")]
-        public IActionResult GetTradeOrder(int id)
+        [HttpPost("CreateOrder")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CreateOrder(TradeOrderViewModel orderViewModel)
         {
-            try
+            if (orderViewModel != null)
             {
-                if (id > 0)
-                {
-                    var res = _context.TradeOrders.FirstOrDefault(x => x.CustomerID == id);
-                    if (res != null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem!");
-            }
-            catch (Exception e)
-            {
-                _report.AnotherExeption(e);
+                await _tradeOrderService.CreateOrder(orderViewModel);
+                return Ok();
             }
             return BadRequest();
         }
 
-        [HttpGet("GetOrdersByCustomer")]
-        public IActionResult Get(string titleOfCustomer)
+        [HttpDelete("DeleteOrder/{id}")]
+        [ProducesResponseType(202)] //accepted
+        [ProducesResponseType(204)] //no content
+        public async Task<IActionResult> DeleteOrder(int id)
         {
             try
             {
-                if (!String.IsNullOrEmpty(titleOfCustomer))
-                {
-                    var res = _context.TradeOrders
-                                .Where(p => _context.Customers
-                                            .Any(z => p.CustomerID == z.CusomerID &&
-                                                 z.Title == titleOfCustomer)).ToList();
-                    if (res!=null)
-                    {
-                        return Ok(res);
-                    }
-                }
-                throw new ArgumentException("Huston we have a problem");
+                await _tradeOrderService.Delete(id);
+                return Ok();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _report.AnotherExeption(e);
+                _logs.AnotherExeption(ex);
             }
             return BadRequest();
         }
 
+        [HttpGet("GetOrdersOfCustomer")]
+        public async Task<IActionResult> GetOrders(int customerId)
+        {
+            try
+            {
+                var res = await _tradeOrderService.GetOrdersOfCustomer(customerId);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _logs.AnotherExeption(ex);
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("EditOrder")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> Update(int id, TradeOrderViewModel tradeOrderViewModel)
+        {
+            try
+            {
+                var entity = await _tradeOrderService.Update(id, tradeOrderViewModel);
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                _logs.AnotherExeption(ex);
+            }
+            return BadRequest();
+        }
     }
 }

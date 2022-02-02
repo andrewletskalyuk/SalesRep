@@ -12,11 +12,9 @@ namespace SalesRepWebApi.Controllers
     [Authorize]
     public class TradeCompanyController : ControllerBase
     {
-        private readonly EFContext _context;
         private readonly ITradeCompanyService _tcService;
-        public TradeCompanyController(EFContext context, ITradeCompanyService tcService)
+        public TradeCompanyController(ITradeCompanyService tcService)
         {
-            _context = context;
             _tcService = tcService;
         }
 
@@ -44,7 +42,7 @@ namespace SalesRepWebApi.Controllers
         [HttpGet("GetCompanyByTitle/{title}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)] //No Content
-        public async Task<ActionResult<TradeCompanyViewModel>> GetByTitle(string title)
+        public async Task<IActionResult> GetByTitle(string title)
         {
             var res = await _tcService.GetCompanyByTitle(title);
             if (res!=null)

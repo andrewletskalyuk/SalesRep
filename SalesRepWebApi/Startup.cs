@@ -75,6 +75,7 @@ namespace SalesRepWebApi
             services.AddScoped<ISalesRepService, SalesRepService>();
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<ITradeCompanyService, TradeCompanyService>();
+            services.AddScoped<ITradeOrderService, TradeOrderService>();
 
             services.AddSwaggerGen();
 

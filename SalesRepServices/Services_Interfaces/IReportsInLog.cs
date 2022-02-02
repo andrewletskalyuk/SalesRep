@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SalesRepServices.Services_Interfaces
 {
-    interface IReportsInLog
+    public interface IReportsInLog
     {
         void AnotherExeption(Exception ex);
     }
