@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using SalesRepDAL.Entities;
 using SalesRepServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SalesRepServices.MappingProfiles
 {
@@ -11,8 +8,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public CustomerProfile()
         {
-            CreateMap<Customer, CustomerViewModel>();
-            CreateMap<CustomerViewModel, Customer>();
+            CreateMap<Customer, CustomerModel>();
+            CreateMap<CustomerModel, Customer>();
         }
     }
 }

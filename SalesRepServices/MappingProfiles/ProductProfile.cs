@@ -8,8 +8,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public ProductProfile()
         {
-            CreateMap<ProductViewModel, Product>();
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductModel, Product>();
+            CreateMap<Product, ProductModel>();
         }
     }
 }

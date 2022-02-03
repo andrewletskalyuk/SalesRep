@@ -9,8 +9,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public SupplierProfile()
         {
-            CreateMap<SupplierViewModel, Supplier>();
-            CreateMap<Supplier, SupplierViewModel>();
+            CreateMap<SupplierModel, Supplier>();
+            CreateMap<Supplier, SupplierModel>();
         }
     }
 }

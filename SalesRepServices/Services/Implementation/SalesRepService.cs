@@ -18,11 +18,11 @@ namespace SalesRepServices.Services.Implementation
             _context = context;
             _mapper = mapper;
         }
-        public async Task<OperationStatus> CreateRep(SalesRepViewModel salesRepViewModel)
+        public async Task<OperationStatus> CreateRep(SalesRepModel salesRepViewModel)
         {
             if (salesRepViewModel!= null)
             {
-                var entity = _mapper.Map<SalesRepViewModel, SaleRep>(salesRepViewModel);
+                var entity = _mapper.Map<SalesRepModel, SaleRep>(salesRepViewModel);
                 _context.SaleRep.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -42,26 +42,26 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<SalesRepViewModel> GetByName(string name)
+        public async Task<SalesRepModel> GetByName(string name)
         {
             var entity = await _context.SaleRep
                         .SingleOrDefaultAsync(x => x.FullName == name);
             if (entity==null)
             {
-                return new SalesRepViewModel();
+                return new SalesRepModel();
             }
-            return _mapper.Map<SaleRep, SalesRepViewModel>(entity);
+            return _mapper.Map<SaleRep, SalesRepModel>(entity);
 
         }
 
-        public async Task<OperationStatus> Update(int id, SalesRepViewModel salesRepViewModel)
+        public async Task<OperationStatus> Update(int id, SalesRepModel salesRepViewModel)
         {
             var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x=>x.SaleRepID == id);
             if (repUpdate==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<SalesRepViewModel, SaleRep>(salesRepViewModel, repUpdate);
+            var map = _mapper.Map<SalesRepModel, SaleRep>(salesRepViewModel, repUpdate);
             _context.SaleRep.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

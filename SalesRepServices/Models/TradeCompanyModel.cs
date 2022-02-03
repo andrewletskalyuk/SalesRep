@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class TradeCompanyViewModel
+    public class TradeCompanyModel
     {
         public string Title { get; set; }
         public string Address { get; set; }
@@ -12,6 +12,6 @@ namespace SalesRepServices.Models
         public string Email { get; set; }
         public string Owner { get; set; }
         public string TaxSystem { get; set; }
-        public List<SalesRepViewModel> SaleReps { get; set; } = new List<SalesRepViewModel>();
+        public List<SalesRepModel> SaleReps { get; set; } = new List<SalesRepModel>();
     }
 }

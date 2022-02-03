@@ -76,6 +76,7 @@ namespace SalesRepWebApi
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<ITradeCompanyService, TradeCompanyService>();
             services.AddScoped<ITradeOrderService, TradeOrderService>();
+            services.AddScoped<ILogsReport, LogsReport>();
 
             services.AddSwaggerGen();
 
@@ -116,7 +117,7 @@ namespace SalesRepWebApi
                     );
             });
 
-            //seeder
+            //seeder temporary method
             //SeedDataToDB.SeedData(app.ApplicationServices);
         }
     }

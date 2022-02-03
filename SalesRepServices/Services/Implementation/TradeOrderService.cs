@@ -17,18 +17,18 @@ namespace SalesRepServices.Services.Implementation
     {
         private readonly EFContext _context;
         private readonly IMapper _mapper;
-        private readonly IReportsInLog _logs;
-        public TradeOrderService(EFContext context, IMapper mapper, IReportsInLog logs)
+        private readonly ILogsReport _logs;
+        public TradeOrderService(EFContext context, IMapper mapper, ILogsReport logs)
         {
             _context = context;
             _mapper = mapper;
             _logs = logs;
         }
-        public async Task<OperationStatus> CreateOrder(TradeOrderViewModel tradeOrderViewModel)
+        public async Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderViewModel)
         {
             if (tradeOrderViewModel != null)
             {
-                var entity = _mapper.Map<TradeOrderViewModel, TradeOrder>(tradeOrderViewModel);
+                var entity = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderViewModel);
                 _context.TradeOrders.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -56,26 +56,28 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = false, Message = "204" };
         }
 
-        public async Task<List<TradeOrderViewModel>> GetOrdersOfCustomer(int customerId)
+        public async Task<List<TradeOrderModel>> GetOrdersOfCustomer(int customerId)
         {
             var ordersOfCustomer = await _context.TradeOrders
                         .Where(x => x.CustomerID == customerId).ToListAsync();
             if (ordersOfCustomer == null)
             {
-                return new List<TradeOrderViewModel>();
+                //переробити треба 
+                return new List<TradeOrderModel>();
             }
-            var map = _mapper.Map<List<TradeOrder>, List<TradeOrderViewModel>>(ordersOfCustomer);
+            //переробити треба
+            var map = new List<TradeOrderModel>();// _mapper.Map<List<TradeOrder>, List<TradeOrderViewModel>>(ordersOfCustomer);
             return map;
         }
 
-        public async Task<OperationStatus> Update(int id, TradeOrderViewModel tradeOrderViewModel)
+        public async Task<OperationStatus> Update(int id, TradeOrderModel tradeOrderViewModel)
         {
             var to = await _context.TradeOrders.FirstOrDefaultAsync(x => x.TradeOrderID == id);
             if (to == null)
             {
                 return new OperationStatus() { IsSuccess = true, Message = "204" };
             }
-            var mapTO = _mapper.Map<TradeOrderViewModel, TradeOrder>(tradeOrderViewModel, to);
+            var mapTO = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderViewModel, to);
             _context.TradeOrders.Update(mapTO);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

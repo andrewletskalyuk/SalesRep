@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SalesRepServices.Services_ForSalesRep
 {
-    public class ReportsStatic : IReportsInLog
+    public class LogsReport : ILogsReport
     {
         public IConfiguration Configuration { get; }
         public void AnotherExeption(Exception ex)

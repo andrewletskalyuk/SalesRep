@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SalesRepServices.Services_Interfaces
 {
-    public interface IReportsInLog
+    public interface ILogsReport
     {
         void AnotherExeption(Exception ex);
     }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class CustomerViewModel
+    public class CustomerModel
     {
         public string Title { get; set; }
         public string Address { get; set; }

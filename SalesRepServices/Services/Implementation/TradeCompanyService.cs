@@ -18,11 +18,11 @@ namespace SalesRepServices.Services.Implementation
             _context = context;
             _mapper = mapper;
         }
-        public async Task<OperationStatus> CreateCompany(TradeCompanyViewModel tradeCompanyVM)
+        public async Task<OperationStatus> CreateCompany(TradeCompanyModel tradeCompanyVM)
         {
             if (tradeCompanyVM!=null)
             {
-                var entity = _mapper.Map<TradeCompanyViewModel, TradeCompany>(tradeCompanyVM);
+                var entity = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyVM);
                 _context.Trades.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -42,25 +42,25 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<TradeCompanyViewModel> GetCompanyByTitle(string title)
+        public async Task<TradeCompanyModel> GetCompanyByTitle(string title)
         {
             var entity = await _context.Trades
                                 .SingleOrDefaultAsync(x=>x.Title==title);
             if (entity==null)
             {
-                return new TradeCompanyViewModel();
+                return new TradeCompanyModel();
             }
-            return _mapper.Map<TradeCompany, TradeCompanyViewModel>(entity);
+            return _mapper.Map<TradeCompany, TradeCompanyModel>(entity);
         }
 
-        public async Task<OperationStatus> Update(int id, TradeCompanyViewModel tradeCompanyVM)
+        public async Task<OperationStatus> Update(int id, TradeCompanyModel tradeCompanyVM)
         {
             var tc = await _context.Trades.FirstOrDefaultAsync(x=>x.TradeCompanyID==id);
             if (tc==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var maptc = _mapper.Map<TradeCompanyViewModel, TradeCompany>(tradeCompanyVM, tc);
+            var maptc = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyVM, tc);
             _context.Trades.Update(maptc);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

@@ -6,9 +6,9 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface ITradeCompanyService
     {
-        Task<OperationStatus> CreateCompany(TradeCompanyViewModel tradeCompanyVM);
-        Task<TradeCompanyViewModel> GetCompanyByTitle(string title);
-        Task<OperationStatus> Update(int id, TradeCompanyViewModel tradeCompanyVM);
+        Task<OperationStatus> CreateCompany(TradeCompanyModel tradeCompanyVM);
+        Task<TradeCompanyModel> GetCompanyByTitle(string title);
+        Task<OperationStatus> Update(int id, TradeCompanyModel tradeCompanyVM);
         Task<OperationStatus> Delete(string title);
     }
 }

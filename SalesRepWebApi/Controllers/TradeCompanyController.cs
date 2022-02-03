@@ -18,9 +18,9 @@ namespace SalesRepWebApi.Controllers
             _tcService = tcService;
         }
 
-        [HttpPost("CreateCompany")]
+        [HttpPost("CreateCompany/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CreateCompany(TradeCompanyViewModel tcViewModel)
+        public async Task<IActionResult> CreateCompany(TradeCompanyModel tcViewModel)
         {
             if (tcViewModel!=null)
             {
@@ -52,12 +52,12 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpPut("UpdateCompany")]
+        [HttpPut("UpdateCompany/{id}/{model}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> Update(int id, TradeCompanyViewModel tcViewModel)
+        public async Task<IActionResult> Update(int id, TradeCompanyModel tcModel)
         {
-            var entity = await _tcService.Update(id, tcViewModel);
+            var entity = await _tcService.Update(id, tcModel);
             return Ok(entity);
         }
     }

@@ -8,8 +8,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public TradeCompanyProfile()
         {
-            CreateMap<TradeCompany, TradeCompanyViewModel>();
-            CreateMap<TradeCompanyViewModel, TradeCompany>();
+            CreateMap<TradeCompany, TradeCompanyModel>();
+            CreateMap<TradeCompanyModel, TradeCompany>();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class ProductViewModel
+    public class ProductModel
     {
         public string Title { get; set; }
         public int QuantityInWarehouse { get; set; }

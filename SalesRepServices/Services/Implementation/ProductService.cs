@@ -35,7 +35,7 @@ namespace SalesRepServices.Services.Implementation
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
-        public async Task<ProductViewModel> GetById(int id)
+        public async Task<ProductModel> GetById(int id)
         {
             var entity = await _context.Products
                               .SingleOrDefaultAsync(x => x.ProductID == id);
@@ -44,47 +44,47 @@ namespace SalesRepServices.Services.Implementation
                 return null;
             }
             var mapper = _mappingConguration.CreateMapper();
-            return mapper.Map<ProductViewModel>(entity);
+            return mapper.Map<ProductModel>(entity);
         }
-        public async Task<IEnumerable<ProductViewModel>> GetProductsAsync()
+        public async Task<IEnumerable<ProductModel>> GetProductsAsync()
         {
             var query = _context.Products
-                        .ProjectTo<ProductViewModel>(_mappingConguration);
+                        .ProjectTo<ProductModel>(_mappingConguration);
             return await query.ToArrayAsync();
         }
-        public async Task<OperationStatus> UpdateAsync(int id, ProductViewModel productViewModel)
+        public async Task<OperationStatus> UpdateAsync(int id, ProductModel productModel)
         {
             var productForUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
             if (productForUpdate==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<ProductViewModel, Product>(productViewModel, productForUpdate);
+            var map = _mapper.Map<ProductModel, Product>(productModel, productForUpdate);
             _context.Products.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess=true, Message = "200"};
         }
-        public async Task<OperationStatus> AddProduct(ProductViewModel productViewModel)
+        public async Task<OperationStatus> AddProduct(ProductModel productModel)
         {
-            if (productViewModel!=null)
+            if (productModel!=null)
             {
                 var mapper = _mappingConguration.CreateMapper();
-                var entity = mapper.Map<ProductViewModel,Product>(productViewModel);
+                var entity = mapper.Map<ProductModel,Product>(productModel);
                 _context.Products.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { Message = "200", IsSuccess = true };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
-        public async Task<ProductViewModel> GetByTitle(string title)
+        public async Task<ProductModel> GetByTitle(string title)
         {
             var entity = await _context.Products
                         .SingleOrDefaultAsync(x => x.Title == title);
             if (entity==null)
             {
-                return new ProductViewModel();
+                return new ProductModel();
             }
-            return _mapper.Map<Product,ProductViewModel>(entity);
+            return _mapper.Map<Product,ProductModel>(entity);
         }
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SalesRepServices.Models
 {
-    public class TradeOrderViewModel
+    public class TradeOrderModel
     {
         public int SumOfOrder { get; set; }
         public string DeliveryAddress { get; set; }
@@ -11,6 +11,6 @@ namespace SalesRepServices.Models
         public string AdditionalInfo { get; set; }
         public int CustomerID { get; set; }
         public int SalesRepID { get; set; }
-        public List<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
+        public List<ProductModel> Products { get; set; } = new List<ProductModel>();
     }
 }

@@ -9,10 +9,8 @@ namespace SalesRepServices.MappingProfiles
     {
         public TradeOrderProfile()
         {
-            CreateMap<TradeOrder, TradeOrderViewModel>();
-            CreateMap<TradeOrderViewModel, TradeOrder>();
-            CreateMap<List<TradeOrder>, List<TradeOrderViewModel>>();
-            CreateMap<List<TradeOrderViewModel>, List<TradeOrder>>();
+            CreateMap<TradeOrder, TradeOrderModel>();
+            CreateMap<TradeOrderModel, TradeOrder>();
         }
     }
 }

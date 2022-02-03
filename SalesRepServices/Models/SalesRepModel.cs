@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class SalesRepViewModel
+    public class SalesRepModel
     {
         public string FullName { get; set; }
         public int Salary { get; set; }

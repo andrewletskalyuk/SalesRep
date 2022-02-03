@@ -26,10 +26,10 @@ namespace SalesRepWebApi.Controllers
 
         [HttpGet("GetAllCustomers")]
         [ProducesResponseType(200)]
-        public async Task<Collection<CustomerViewModel>> GetAllCustomers()
+        public async Task<Collection<CustomerModel>> GetAllCustomers()
         {
             var customersViewModels = await _customerServices.GetCustomersAsync();
-            var collection = new Collection<CustomerViewModel>
+            var collection = new Collection<CustomerModel>
             {
                 Value = customersViewModels.ToArray()
             };
@@ -39,7 +39,7 @@ namespace SalesRepWebApi.Controllers
         [HttpGet("GetCustomerByID/{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<CustomerViewModel>> GetById(int id)
+        public async Task<ActionResult<CustomerModel>> GetById(int id)
         {
             var entity = await _customerServices.GetById(id);
             if (entity == null)
@@ -60,7 +60,7 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateCustomer")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateAsync(int id, CustomerViewModel updateCustomerModel)
+        public async Task<IActionResult> UpdateAsync(int id, CustomerModel updateCustomerModel)
         {
             var entity = await _customerServices.UpdateAsync(id, updateCustomerModel);
             return Ok(entity);
@@ -68,7 +68,7 @@ namespace SalesRepWebApi.Controllers
         
         [HttpPost("CreateCustomer/{customerModel}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> CreateCustomer(CustomerViewModel customerDTO)
+        public async Task<ActionResult> CreateCustomer(CustomerModel customerDTO)
         {
             if (customerDTO != null)
             {

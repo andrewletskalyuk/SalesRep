@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SalesRepServices.Models
 {
-    public class SupplierViewModel
+    public class SupplierModel
     {
         public string Title { get; set; }
         public string Address { get; set; }
@@ -13,6 +13,6 @@ namespace SalesRepServices.Models
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public string AdditionalInfo { get; set; }
-        public List<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
+        public List<ProductModel> Products { get; set; } = new List<ProductModel>();
     }
 }

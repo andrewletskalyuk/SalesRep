@@ -7,10 +7,10 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<IEnumerable<CustomerViewModel>> GetCustomersAsync();
-        Task<CustomerViewModel> GetById(int id);
+        Task<IEnumerable<CustomerModel>> GetCustomersAsync();
+        Task<CustomerModel> GetById(int id);
         Task<OperationStatus> DeleteCustomerById(int id);
-        Task<OperationStatus> UpdateAsync(int id, CustomerViewModel modelCustomerDTO);
-        Task<OperationStatus> CreateCustomer(CustomerViewModel customerDTO);
+        Task<OperationStatus> UpdateAsync(int id, CustomerModel modelCustomerDTO);
+        Task<OperationStatus> CreateCustomer(CustomerModel customerDTO);
     }
 }

@@ -2,28 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using SalesRepServices.Services_ForSalesRep;
 using System.Threading.Tasks;
 
 namespace SalesRepWebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/product")]
     [Produces("application/json")]
-    [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ReportsStatic _report;
         private readonly IProductService _productService;
         public ProductController(IProductService productService)
         {
-            _report = new ReportsStatic();
             _productService = productService;
         }
 
         [HttpGet("GetProductById/{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<ProductViewModel>> GetById(int id)
+        public async Task<ActionResult<ProductModel>> GetById(int id)
         {
             var entity = await _productService.GetById(id);
             if (entity == null)
@@ -33,8 +29,8 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetProductByTitle")]
-        public async Task<ActionResult<ProductViewModel>> GetByTitle(string title)
+        [HttpGet("GetProductByTitle/{title}")]
+        public async Task<ActionResult<ProductModel>> GetByTitle(string title)
         {
             var entity = await _productService.GetByTitle(title);
             if (entity==null)
@@ -52,17 +48,17 @@ namespace SalesRepWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateProduct")]
+        [HttpPut("UpdateProduct/{id}/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateProduct(int id, ProductViewModel productViewModel)
+        public async Task<IActionResult> UpdateProduct(int id, ProductModel productViewModel)
         {
             var entity = await _productService.UpdateAsync(id, productViewModel);
             return Ok(entity);
         }
         
-        [HttpPost("AddProduct/{productModel}")]
+        [HttpPost("AddProduct/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddProduct(ProductViewModel productViewModel)
+        public async Task<IActionResult> AddProduct(ProductModel productViewModel)
         {
             if (productViewModel!=null)
             {

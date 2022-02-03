@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SalesRepDAL;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using System.Threading.Tasks;
@@ -16,22 +15,22 @@ namespace SalesRepWebApi.Controllers
             _supplierService = salesRepService;
         }
 
-        [HttpPost("CreateSupplier")]
+        [HttpPost("CreateSupplier/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CreateSupplier(SupplierViewModel supplierViewModel)
+        public async Task<IActionResult> CreateSupplier(SupplierModel supplierModel)
         {
-            if (supplierViewModel != null)
+            if (supplierModel != null)
             {
-                await _supplierService.CreateSupplier(supplierViewModel);
+                await _supplierService.CreateSupplier(supplierModel);
                 return Ok();
             }
             return BadRequest();
         }
 
-        [HttpGet("GetSupplier/{name}")]
+        [HttpGet("GetSupplier/{title}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<SupplierViewModel>> GetSupplier(string title)
+        public async Task<ActionResult<SupplierModel>> GetSupplier(string title)
         {
             var entity = await _supplierService.GetByTitle(title);
             if (entity != null)
@@ -41,9 +40,9 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetSuppWithProducts")]
+        [HttpGet("GetSuppWithProducts/{title}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<SupplierViewModel>> GetSupWithProducts(string supplierTitle)
+        public async Task<ActionResult<SupplierModel>> GetSupWithProducts(string supplierTitle)
         {
             var array = await _supplierService.GetSupplierWithProducts(supplierTitle);
             if (array!=null)
@@ -53,12 +52,12 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
     
-        [HttpPut("UpdateSupplier")]
+        [HttpPut("UpdateSupplier/{id}/{model}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> UpdateSupplier(int id, SupplierViewModel supplierViewModel)
+        public async Task<IActionResult> UpdateSupplier(int id, SupplierModel supplierModel)
         {
-            var entity = await _supplierService.Update(id, supplierViewModel);
+            var entity = await _supplierService.Update(id, supplierModel);
             return Ok(entity);
         }
 

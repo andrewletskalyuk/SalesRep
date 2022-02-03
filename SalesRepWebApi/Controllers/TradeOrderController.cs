@@ -5,8 +5,6 @@ using SalesRepServices.Services_Interfaces;
 using System;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -14,20 +12,20 @@ namespace SalesRepWebApi.Controllers
     public class TradeOrderController : ControllerBase
     {
         private readonly ITradeOrderService _tradeOrderService;
-        private readonly IReportsInLog _logs;
-        public TradeOrderController(IReportsInLog logs, ITradeOrderService tradeOrderService)
+        private readonly ILogsReport _logs;
+        public TradeOrderController(ILogsReport logs, ITradeOrderService tradeOrderService)
         {
             _tradeOrderService = tradeOrderService;
             _logs = logs;
         }
 
-        [HttpPost("CreateOrder")]
+        [HttpPost("CreateOrder/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CreateOrder(TradeOrderViewModel orderViewModel)
+        public async Task<IActionResult> CreateOrder(TradeOrderModel orderModel)
         {
-            if (orderViewModel != null)
+            if (orderModel != null)
             {
-                await _tradeOrderService.CreateOrder(orderViewModel);
+                await _tradeOrderService.CreateOrder(orderModel);
                 return Ok();
             }
             return BadRequest();
@@ -50,7 +48,7 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetOrdersOfCustomer")]
+        [HttpGet("GetOrdersOfCustomer/{id}")]
         public async Task<IActionResult> GetOrders(int customerId)
         {
             try
@@ -65,14 +63,14 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPut("EditOrder")]
+        [HttpPut("EditOrder/{id}/{model}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> Update(int id, TradeOrderViewModel tradeOrderViewModel)
+        public async Task<IActionResult> Update(int id, TradeOrderModel tradeOrderModel)
         {
             try
             {
-                var entity = await _tradeOrderService.Update(id, tradeOrderViewModel);
+                var entity = await _tradeOrderService.Update(id, tradeOrderModel);
                 return Ok(entity);
             }
             catch (Exception ex)
