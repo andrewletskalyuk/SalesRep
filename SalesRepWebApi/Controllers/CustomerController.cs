@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SalesRepDAL;
-using SalesRepServices.Helpers;
 using SalesRepServices.Models;
-using SalesRepServices.Services.Implementation;
 using SalesRepServices.Services.Interfaces;
-using SalesRepServices.Services_ForSalesRep;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +9,6 @@ namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [ApiController]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerServices;
@@ -58,21 +51,21 @@ namespace SalesRepWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateCustomer")]
+        [HttpPut("UpdateCustomer/{id}/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateAsync(int id, CustomerModel updateCustomerModel)
+        public async Task<IActionResult> UpdateAsync(int id, CustomerModel customerModel)
         {
-            var entity = await _customerServices.UpdateAsync(id, updateCustomerModel);
+            var entity = await _customerServices.UpdateAsync(id, customerModel);
             return Ok(entity);
         }
         
-        [HttpPost("CreateCustomer/{customerModel}")]
+        [HttpPost("CreateCustomer/{model}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> CreateCustomer(CustomerModel customerDTO)
+        public async Task<ActionResult> CreateCustomer(CustomerModel customerModel)
         {
-            if (customerDTO != null)
+            if (customerModel != null)
             {
-                await _customerServices.CreateCustomer(customerDTO);
+                await _customerServices.CreateCustomer(customerModel);
                 return Ok();
             }
             return BadRequest();

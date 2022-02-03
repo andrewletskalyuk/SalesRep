@@ -50,19 +50,19 @@ namespace SalesRepWebApi.Controllers
 
         [HttpPut("UpdateProduct/{id}/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateProduct(int id, ProductModel productViewModel)
+        public async Task<IActionResult> UpdateProduct(int id, ProductModel productModel)
         {
-            var entity = await _productService.UpdateAsync(id, productViewModel);
+            var entity = await _productService.UpdateAsync(id, productModel);
             return Ok(entity);
         }
         
         [HttpPost("AddProduct/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddProduct(ProductModel productViewModel)
+        public async Task<IActionResult> AddProduct(ProductModel productModel)
         {
-            if (productViewModel!=null)
+            if (productModel!=null)
             {
-                await _productService.AddProduct(productViewModel);
+                await _productService.AddProduct(productModel);
                 return Ok();
             }
             return BadRequest();
