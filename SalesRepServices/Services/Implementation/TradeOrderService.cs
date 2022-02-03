@@ -17,12 +17,12 @@ namespace SalesRepServices.Services.Implementation
     {
         private readonly EFContext _context;
         private readonly IMapper _mapper;
-        private readonly ILogsReport _logs;
-        public TradeOrderService(EFContext context, IMapper mapper, ILogsReport logs)
+        private readonly ILogsReport _logsReport;
+        public TradeOrderService(EFContext context, IMapper mapper, ILogsReport logsReport)
         {
             _context = context;
             _mapper = mapper;
-            _logs = logs;
+            _logsReport = logsReport;
         }
         public async Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderViewModel)
         {
@@ -51,23 +51,35 @@ namespace SalesRepServices.Services.Implementation
             }
             catch (Exception ex)
             {
-                _logs.AnotherExeption(ex);
+                _logsReport.AnotherExeption(ex);
             }
             return new OperationStatus() { IsSuccess = false, Message = "204" };
         }
 
         public async Task<List<TradeOrderModel>> GetOrdersOfCustomer(int customerId)
         {
-            var ordersOfCustomer = await _context.TradeOrders
-                        .Where(x => x.CustomerID == customerId).ToListAsync();
+            IQueryable<TradeOrder> ordersOfCustomer = _context.TradeOrders
+                                        .Where(x => x.CustomerID == customerId);
+
+            //working variant - same result!!!
+            //IQueryable<TradeOrder> resZ = _context.Customers.SelectMany(x => x.TradeOrders).Where(z=>z.CustomerID==customerId);
+            List<TradeOrderModel> res = new List<TradeOrderModel>();
             if (ordersOfCustomer == null)
             {
-                //переробити треба 
-                return new List<TradeOrderModel>();
+                return res;
             }
-            //переробити треба
-            var map = new List<TradeOrderModel>();// _mapper.Map<List<TradeOrder>, List<TradeOrderViewModel>>(ordersOfCustomer);
-            return map;
+            try
+            {
+                foreach (var TradeOrder in ordersOfCustomer)
+                {
+                    res.Add(_mapper.Map<TradeOrder, TradeOrderModel>(TradeOrder));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logsReport.AnotherExeption(ex);
+            }
+            return res;
         }
 
         public async Task<OperationStatus> Update(int id, TradeOrderModel tradeOrderViewModel)

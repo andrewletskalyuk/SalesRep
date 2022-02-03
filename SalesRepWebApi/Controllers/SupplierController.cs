@@ -40,11 +40,11 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetSuppWithProducts/{title}")]
+        [HttpGet("GetProductsOfSupplier/{title}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<SupplierModel>> GetSupWithProducts(string supplierTitle)
+        public async Task<ActionResult<SupplierModel>> GetProductsOfSupplier(string supplierTitle)
         {
-            var array = await _supplierService.GetSupplierWithProducts(supplierTitle);
+            var array = await _supplierService.GetProductsOfSupplier(supplierTitle);
             if (array!=null)
             {
                 return Ok(array);
@@ -68,6 +68,14 @@ namespace SalesRepWebApi.Controllers
         {
             await _supplierService.Delete(title);
             return Ok();
+        }
+
+        [HttpGet("SearchByTitle/{title}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> Search(string title)
+        {
+            var res =  await _supplierService.SearchByTitle(title);
+            return Ok(res);
         }
     }
 }

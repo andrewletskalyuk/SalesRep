@@ -5,10 +5,10 @@ using SalesRepDAL.Entities;
 using SalesRepServices.Helpers;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
+using SalesRepServices.Services_Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Implementation
@@ -17,14 +17,16 @@ namespace SalesRepServices.Services.Implementation
     {
         private readonly EFContext _context;
         private readonly IMapper _mapper;
-        public SupplierService(EFContext context, IMapper mapper)
+        private readonly ILogsReport _logsReport;
+        public SupplierService(EFContext context, IMapper mapper, ILogsReport logsReport)
         {
             _context = context;
             _mapper = mapper;
+            _logsReport = logsReport;
         }
         public async Task<OperationStatus> CreateSupplier(SupplierModel supplierViewModel)
         {
-            if (supplierViewModel!=null)
+            if (supplierViewModel != null)
             {
                 var entity = _mapper.Map<SupplierModel, Supplier>(supplierViewModel);
                 _context.Suppliers.Add(entity);
@@ -37,7 +39,7 @@ namespace SalesRepServices.Services.Implementation
         public async Task<OperationStatus> Delete(string title)
         {
             var supplierForDelete = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == title);
-            if (supplierForDelete==null)
+            if (supplierForDelete == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
@@ -50,38 +52,62 @@ namespace SalesRepServices.Services.Implementation
         {
             var entity = await _context.Suppliers
                         .SingleOrDefaultAsync(x => x.Title == title);
-            if (entity==null)
+            if (entity == null)
             {
                 return new SupplierModel();
             }
             return _mapper.Map<Supplier, SupplierModel>(entity);
         }
 
-        public async Task<SupplierModel> GetSupplierWithProducts(string supplierTitle)
+        public async Task<List<ProductModel>> GetProductsOfSupplier(string supplierTitle)
         {
             //переробити
             var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == supplierTitle);
-            var listProducts = _context.Products
-                            .Where(x => x.SupplierID == supplier.SupplierID)
-                            .SelectMany(z=> _context.Products.Where(y=>y.SupplierID==z.SupplierID));
-            var mapProduct = _mapper.Map<List<ProductModel>>(listProducts);
-            var mapSupplier = _mapper.Map<SupplierModel>(supplier);
-            mapSupplier.Products.AddRange(mapProduct);
-            if (mapSupplier == null)
+            var res = new List<ProductModel>();
+            if (supplier != null)
             {
-                return new SupplierModel();
+                IQueryable<Product> products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
+                try
+                {
+                    foreach (var Product in products)
+                    {
+                        res.Add(_mapper.Map<Product, ProductModel>(Product));
+                    }
+                    return res;
+                }
+                catch (Exception ex)
+                {
+                    _logsReport.AnotherExeption(ex);
+                }
             }
-            return mapSupplier;
+            return res;
+        }
+
+        public async Task<List<SupplierModel>> SearchByTitle(string text)
+        {
+            IQueryable<Supplier> suppliers = _context.Suppliers
+                                                .Where(x => x.Title.Contains(text) 
+                                                      && !String.IsNullOrEmpty(text));
+            var res = new List<SupplierModel>();
+            if (suppliers!=null)
+            {
+                foreach (var Supplier in suppliers)
+                {
+                    res.Add(_mapper.Map<Supplier, SupplierModel>(Supplier));
+                }
+                return res;
+            }
+            return res;
         }
 
         public async Task<OperationStatus> Update(int id, SupplierModel supplierModel)
         {
-            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x=>x.SupplierID == id);
-            if (supplier== null)
+            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.SupplierID == id);
+            if (supplier == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<SupplierModel,Supplier>(supplierModel,supplier);
+            var map = _mapper.Map<SupplierModel, Supplier>(supplierModel, supplier);
             _context.Suppliers.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };
