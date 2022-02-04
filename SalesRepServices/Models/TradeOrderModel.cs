@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SalesRepServices.Models
 {
     public class TradeOrderModel
     {
+        [Key]
+        public int TradeOrderID { get; set; }
+        [Required]
         public int SumOfOrder { get; set; }
         public string DeliveryAddress { get; set; }
         public DateTime CreatedDate { get; set; }

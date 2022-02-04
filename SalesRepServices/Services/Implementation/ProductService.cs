@@ -52,9 +52,9 @@ namespace SalesRepServices.Services.Implementation
                         .ProjectTo<ProductModel>(_mappingConguration);
             return await query.ToArrayAsync();
         }
-        public async Task<OperationStatus> UpdateAsync(int id, ProductModel productModel)
+        public async Task<OperationStatus> UpdateAsync(ProductModel productModel)
         {
-            var productForUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
+            var productForUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productModel.ProductID);
             if (productForUpdate==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };

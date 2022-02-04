@@ -7,10 +7,10 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface ISupplierService
     {
-        Task<OperationStatus> CreateSupplier(SupplierModel supplierViewModel);
+        Task<OperationStatus> CreateSupplier(SupplierModel supplierModel);
         Task<SupplierModel> GetByTitle(string title);
         Task<List<ProductModel>> GetProductsOfSupplier(string supplierTitle);
-        Task<OperationStatus> Update(int id, SupplierModel supplierViewModel);
+        Task<OperationStatus> Update(SupplierModel supplierModel);
         Task<OperationStatus> Delete(string title);
         Task<List<SupplierModel>> SearchByTitle(string text);
     }

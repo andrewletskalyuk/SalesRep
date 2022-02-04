@@ -18,11 +18,11 @@ namespace SalesRepServices.Services.Implementation
             _context = context;
             _mapper = mapper;
         }
-        public async Task<OperationStatus> CreateCompany(TradeCompanyModel tradeCompanyVM)
+        public async Task<OperationStatus> CreateCompany(TradeCompanyModel tradeCompanyModel)
         {
-            if (tradeCompanyVM!=null)
+            if (tradeCompanyModel!=null)
             {
-                var entity = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyVM);
+                var entity = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel);
                 _context.Trades.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -53,14 +53,14 @@ namespace SalesRepServices.Services.Implementation
             return _mapper.Map<TradeCompany, TradeCompanyModel>(entity);
         }
 
-        public async Task<OperationStatus> Update(int id, TradeCompanyModel tradeCompanyVM)
+        public async Task<OperationStatus> Update(TradeCompanyModel tradeCompanyModel)
         {
-            var tc = await _context.Trades.FirstOrDefaultAsync(x=>x.TradeCompanyID==id);
+            var tc = await _context.Trades.FirstOrDefaultAsync(x=>x.TradeCompanyID==tradeCompanyModel.TradeCompanyID);
             if (tc==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var maptc = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyVM, tc);
+            var maptc = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel, tc);
             _context.Trades.Update(maptc);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

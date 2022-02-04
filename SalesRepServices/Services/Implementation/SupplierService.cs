@@ -24,11 +24,11 @@ namespace SalesRepServices.Services.Implementation
             _mapper = mapper;
             _logsReport = logsReport;
         }
-        public async Task<OperationStatus> CreateSupplier(SupplierModel supplierViewModel)
+        public async Task<OperationStatus> CreateSupplier(SupplierModel supplierModel)
         {
-            if (supplierViewModel != null)
+            if (supplierModel != null)
             {
-                var entity = _mapper.Map<SupplierModel, Supplier>(supplierViewModel);
+                var entity = _mapper.Map<SupplierModel, Supplier>(supplierModel);
                 _context.Suppliers.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -61,7 +61,6 @@ namespace SalesRepServices.Services.Implementation
 
         public async Task<List<ProductModel>> GetProductsOfSupplier(string supplierTitle)
         {
-            //переробити
             var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == supplierTitle);
             var res = new List<ProductModel>();
             if (supplier != null)
@@ -100,9 +99,9 @@ namespace SalesRepServices.Services.Implementation
             return res;
         }
 
-        public async Task<OperationStatus> Update(int id, SupplierModel supplierModel)
+        public async Task<OperationStatus> Update(SupplierModel supplierModel)
         {
-            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.SupplierID == id);
+            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.SupplierID == supplierModel.SupplierID);
             if (supplier == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };

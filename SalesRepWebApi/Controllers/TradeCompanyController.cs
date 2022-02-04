@@ -9,7 +9,6 @@ namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [Authorize]
     public class TradeCompanyController : ControllerBase
     {
         private readonly ITradeCompanyService _tcService;
@@ -52,12 +51,11 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpPut("UpdateCompany/{id}/{model}")]
+        [HttpPut("UpdateCompany")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        public async Task<IActionResult> Update(int id, TradeCompanyModel tcModel)
+        public async Task<IActionResult> Update(TradeCompanyModel tcModel)
         {
-            var entity = await _tcService.Update(id, tcModel);
+            var entity = await _tcService.Update(tcModel);
             return Ok(entity);
         }
     }

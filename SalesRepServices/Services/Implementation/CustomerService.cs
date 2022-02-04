@@ -53,25 +53,25 @@ namespace SalesRepServices.Services.Implementation
             return new OperationStatus() { IsSuccess = true, Message = "200" };
         }
 
-        public async Task<OperationStatus> UpdateAsync(int id, CustomerModel customerViewModel)
+        public async Task<OperationStatus> UpdateAsync(CustomerModel customerModel)
         {
-            var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
+            var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == customerModel.CusomerID);
             if (customerForUpdate == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<CustomerModel,Customer>(customerViewModel,customerForUpdate);
+            var map = _mapper.Map<CustomerModel,Customer>(customerModel,customerForUpdate);
             _context.Customers.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200"};
         }
 
-        public async Task<OperationStatus> CreateCustomer(CustomerModel customerViewModel)
+        public async Task<OperationStatus> CreateCustomer(CustomerModel customerModel)
         {
-            if (customerViewModel != null)
+            if (customerModel != null)
             {
                 var mapper = _mappingConguration.CreateMapper();
-                var entity = mapper.Map<CustomerModel,Customer>(customerViewModel);
+                var entity = mapper.Map<CustomerModel,Customer>(customerModel);
                 _context.Customers.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };

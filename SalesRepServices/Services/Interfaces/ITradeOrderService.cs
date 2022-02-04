@@ -7,9 +7,9 @@ namespace SalesRepServices.Services.Interfaces
 {
     public interface ITradeOrderService
     {
-        Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderViewModel);
+        Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderModel);
         Task<List<TradeOrderModel>> GetOrdersOfCustomer(int CustomerId);
-        Task<OperationStatus> Update(int id, TradeOrderModel tradeOrderViewModel);
+        Task<OperationStatus> Update(TradeOrderModel tradeOrderModel);
         Task<OperationStatus> Delete(int id);
     }
 }

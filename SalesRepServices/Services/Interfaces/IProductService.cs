@@ -11,7 +11,7 @@ namespace SalesRepServices.Services.Interfaces
         Task<ProductModel> GetByTitle(string title);
         Task<OperationStatus> DeleteProductById(int id);
         Task<IEnumerable<ProductModel>> GetProductsAsync();
-        Task<OperationStatus> UpdateAsync(int id, ProductModel productDTO);
+        Task<OperationStatus> UpdateAsync(ProductModel productDTO);
         Task<OperationStatus> AddProduct(ProductModel productDTO);
     }
 }

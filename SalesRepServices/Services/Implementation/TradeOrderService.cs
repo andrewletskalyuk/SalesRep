@@ -24,11 +24,11 @@ namespace SalesRepServices.Services.Implementation
             _mapper = mapper;
             _logsReport = logsReport;
         }
-        public async Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderViewModel)
+        public async Task<OperationStatus> CreateOrder(TradeOrderModel tradeOrderModel)
         {
-            if (tradeOrderViewModel != null)
+            if (tradeOrderModel != null)
             {
-                var entity = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderViewModel);
+                var entity = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel);
                 _context.TradeOrders.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -82,14 +82,14 @@ namespace SalesRepServices.Services.Implementation
             return res;
         }
 
-        public async Task<OperationStatus> Update(int id, TradeOrderModel tradeOrderViewModel)
+        public async Task<OperationStatus> Update(TradeOrderModel tradeOrderModel)
         {
-            var to = await _context.TradeOrders.FirstOrDefaultAsync(x => x.TradeOrderID == id);
+            var to = await _context.TradeOrders.FirstOrDefaultAsync(x => x.TradeOrderID == tradeOrderModel.TradeOrderID);
             if (to == null)
             {
                 return new OperationStatus() { IsSuccess = true, Message = "204" };
             }
-            var mapTO = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderViewModel, to);
+            var mapTO = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel, to);
             _context.TradeOrders.Update(mapTO);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

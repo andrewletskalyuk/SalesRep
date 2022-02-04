@@ -18,11 +18,11 @@ namespace SalesRepServices.Services.Implementation
             _context = context;
             _mapper = mapper;
         }
-        public async Task<OperationStatus> CreateRep(SalesRepModel salesRepViewModel)
+        public async Task<OperationStatus> CreateRep(SalesRepModel salesRepModel)
         {
-            if (salesRepViewModel!= null)
+            if (salesRepModel!= null)
             {
-                var entity = _mapper.Map<SalesRepModel, SaleRep>(salesRepViewModel);
+                var entity = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel);
                 _context.SaleRep.Add(entity);
                 await _context.SaveChangesAsync();
                 return new OperationStatus() { IsSuccess = true, Message = "200" };
@@ -54,14 +54,14 @@ namespace SalesRepServices.Services.Implementation
 
         }
 
-        public async Task<OperationStatus> Update(int id, SalesRepModel salesRepViewModel)
+        public async Task<OperationStatus> Update(SalesRepModel salesRepModel)
         {
-            var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x=>x.SaleRepID == id);
+            var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x=>x.SaleRepID == salesRepModel.SaleRepID);
             if (repUpdate==null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
-            var map = _mapper.Map<SalesRepModel, SaleRep>(salesRepViewModel, repUpdate);
+            var map = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel, repUpdate);
             _context.SaleRep.Update(map);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true, Message = "200" };

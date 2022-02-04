@@ -63,14 +63,14 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPut("EditOrder/{id}/{model}")]
+        [HttpPut("EditOrder")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> Update(int id, TradeOrderModel tradeOrderModel)
+        public async Task<IActionResult> Update(TradeOrderModel tradeOrderModel)
         {
             try
             {
-                var entity = await _tradeOrderService.Update(id, tradeOrderModel);
+                var entity = await _tradeOrderService.Update(tradeOrderModel);
                 return Ok(entity);
             }
             catch (Exception ex)

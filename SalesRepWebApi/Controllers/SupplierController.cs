@@ -52,12 +52,12 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
     
-        [HttpPut("UpdateSupplier/{id}/{model}")]
+        [HttpPut("UpdateSupplier/{model}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> UpdateSupplier(int id, SupplierModel supplierModel)
+        public async Task<IActionResult> UpdateSupplier(SupplierModel supplierModel)
         {
-            var entity = await _supplierService.Update(id, supplierModel);
+            var entity = await _supplierService.Update(supplierModel);
             return Ok(entity);
         }
 

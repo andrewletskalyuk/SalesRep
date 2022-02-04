@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace SalesRepWebApi.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
+    [Produces("application/json")]
     public class SalesRepController : ControllerBase
     {
         private readonly EFContext _context;
@@ -23,11 +22,11 @@ namespace SalesRepWebApi.Controllers
         [HttpPost("CreateSalesRep/{model}")]
         [ProducesResponseType(201)] //created
         [ProducesResponseType(401)] //Unautorized
-        public async Task<IActionResult> CreateSalesRep(SalesRepModel salesRepViewModel)
+        public async Task<IActionResult> CreateSalesRep(SalesRepModel salesRepModel)
         {
-            if (salesRepViewModel != null)
+            if (salesRepModel != null)
             {
-                await _salesRepService.CreateRep(salesRepViewModel);
+                await _salesRepService.CreateRep(salesRepModel);
                 return Ok();
             }
             return BadRequest();
@@ -46,18 +45,17 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpPut("UpdateSalesRep/{id}/{model}")]
+        [HttpPut("UpdateSalesRep/{model}")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        public async Task<IActionResult> Update(int id, SalesRepModel salesRepModel)
+        public async Task<IActionResult> Update(SalesRepModel salesRepModel)
         {
-            var entity = await _salesRepService.Update(id, salesRepModel);
+            var entity = await _salesRepService.Update(salesRepModel);
             return Ok(entity);
         }
 
         [HttpDelete("DeleteSalesRepByName/{fullname}")]
         [ProducesResponseType(200)] 
-        [ProducesResponseType(204)] //no content
+        [Authorize]
         public async Task<IActionResult> Delete(string fullname)
         {
             await _salesRepService.DeleteByName(fullname);

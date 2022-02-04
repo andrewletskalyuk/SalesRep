@@ -51,11 +51,11 @@ namespace SalesRepWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateCustomer/{id}/{model}")]
+        [HttpPut("UpdateCustomer/{model}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateAsync(int id, CustomerModel customerModel)
+        public async Task<IActionResult> UpdateAsync(CustomerModel customerModel)
         {
-            var entity = await _customerServices.UpdateAsync(id, customerModel);
+            var entity = await _customerServices.UpdateAsync(customerModel);
             return Ok(entity);
         }
         
