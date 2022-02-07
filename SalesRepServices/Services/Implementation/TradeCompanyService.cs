@@ -25,7 +25,7 @@ namespace SalesRepServices.Services.Implementation
                 var entity = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel);
                 _context.Trades.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
@@ -39,7 +39,7 @@ namespace SalesRepServices.Services.Implementation
             }
             _context.Trades.Remove(tdForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
 
         public async Task<TradeCompanyModel> GetCompanyByTitle(string title)
@@ -63,7 +63,7 @@ namespace SalesRepServices.Services.Implementation
             var maptc = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel, tc);
             _context.Trades.Update(maptc);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
     }
 }

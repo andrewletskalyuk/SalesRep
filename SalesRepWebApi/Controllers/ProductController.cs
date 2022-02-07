@@ -29,17 +29,30 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
 
+        [HttpGet("GetAllProducts")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var res = await _productService.GetProductsAsync();
+            if (res == null)
+            {
+                return NotFound();
+            }
+            return Ok(res);
+        }
+
         [HttpGet("GetProductByTitle/{title}")]
         public async Task<ActionResult<ProductModel>> GetByTitle(string title)
         {
             var entity = await _productService.GetByTitle(title);
-            if (entity==null)
+            if (entity == null)
             {
                 return NotFound();
             }
             return Ok(entity);
         }
-        
+
         [HttpDelete("DeleteProductById/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -48,19 +61,19 @@ namespace SalesRepWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateProduct/{model}")]
+        [HttpPut]
         [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateProduct(ProductModel productModel)
         {
             var entity = await _productService.UpdateAsync(productModel);
             return Ok(entity);
         }
-        
-        [HttpPost("AddProduct/{model}")]
+
+        [HttpPost("AddProduct/{productModel}")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> AddProduct(ProductModel productModel)
         {
-            if (productModel!=null)
+            if (productModel != null)
             {
                 await _productService.AddProduct(productModel);
                 return Ok();

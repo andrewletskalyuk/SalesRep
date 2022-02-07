@@ -21,6 +21,6 @@ namespace SalesRepServices.Models
         public bool IsActive { get; set; }
         [Required]
         public int TradeCompanyID { get; set; }
-        List<TradeOrderModel> TradeOrders { get; set; } = new List<TradeOrderModel>();
+        List<TradeOrderModel> TradeOrders { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetProductsOfSupplier/{title}")]
+        [HttpGet("GetProductsOfSupplier/{supplierTitle}")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<SupplierModel>> GetProductsOfSupplier(string supplierTitle)
         {

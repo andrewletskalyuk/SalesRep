@@ -9,7 +9,7 @@ namespace SalesRepServices.Services.Interfaces
     {
         Task<OperationStatus> CreateSupplier(SupplierModel supplierModel);
         Task<SupplierModel> GetByTitle(string title);
-        Task<List<ProductModel>> GetProductsOfSupplier(string supplierTitle);
+        Task<IList<ProductModel>> GetProductsOfSupplier(string supplierTitle);
         Task<OperationStatus> Update(SupplierModel supplierModel);
         Task<OperationStatus> Delete(string title);
         Task<List<SupplierModel>> SearchByTitle(string text);

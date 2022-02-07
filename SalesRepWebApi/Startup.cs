@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
+using SalesRepDAL.Repositories;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepDAL.Seeders;
 using SalesRepServices.Services.Implementation;
 using SalesRepServices.Services.Interfaces;
@@ -77,6 +79,7 @@ namespace SalesRepWebApi
             services.AddScoped<ITradeCompanyService, TradeCompanyService>();
             services.AddScoped<ITradeOrderService, TradeOrderService>();
             services.AddScoped<ILogsReport, LogsReport>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddSwaggerGen();
 

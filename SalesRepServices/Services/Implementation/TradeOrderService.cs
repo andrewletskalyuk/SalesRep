@@ -31,7 +31,7 @@ namespace SalesRepServices.Services.Implementation
                 var entity = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel);
                 _context.TradeOrders.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
@@ -92,7 +92,7 @@ namespace SalesRepServices.Services.Implementation
             var mapTO = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel, to);
             _context.TradeOrders.Update(mapTO);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
     }
 }

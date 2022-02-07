@@ -23,7 +23,7 @@ namespace SalesRepServices.Services.Implementation
             _context = context;
             _mapper = mapper;
         }
-        
+
         public async Task<IEnumerable<CustomerModel>> GetCustomersAsync()
         {
             var query = _context.Customers.ProjectTo<CustomerModel>(_mappingConguration);
@@ -34,23 +34,24 @@ namespace SalesRepServices.Services.Implementation
         {
             var entity = await _context.Customers
                              .SingleOrDefaultAsync(x => x.CusomerID == id);
+
             if (entity == null)
             {
                 return null;
             }
-            return _mapper.Map<Customer,CustomerModel>(entity);
+            return _mapper.Map<Customer, CustomerModel>(entity);
         }
-        
+
         public async Task<OperationStatus> DeleteCustomerById(int id)
         {
             var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
             if (customerForDelete == null)
             {
-                return new OperationStatus() { IsSuccess = false, Message="204" };
+                return new OperationStatus() { IsSuccess = false, Message = "No Content" };
             }
             _context.Customers.Remove(customerForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
 
         public async Task<OperationStatus> UpdateAsync(CustomerModel customerModel)
@@ -58,23 +59,22 @@ namespace SalesRepServices.Services.Implementation
             var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == customerModel.CusomerID);
             if (customerForUpdate == null)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                return new OperationStatus() { IsSuccess = false, Message = "User Not Found" };
             }
-            var map = _mapper.Map<CustomerModel,Customer>(customerModel,customerForUpdate);
+            var map = _mapper.Map<CustomerModel, Customer>(customerModel, customerForUpdate);
             _context.Customers.Update(map);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200"};
+            return new OperationStatus() { IsSuccess = true };
         }
 
         public async Task<OperationStatus> CreateCustomer(CustomerModel customerModel)
         {
             if (customerModel != null)
             {
-                var mapper = _mappingConguration.CreateMapper();
-                var entity = mapper.Map<CustomerModel,Customer>(customerModel);
+                var entity = _mapper.Map<CustomerModel, Customer>(customerModel);
                 _context.Customers.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }

@@ -20,12 +20,12 @@ namespace SalesRepServices.Services.Implementation
         }
         public async Task<OperationStatus> CreateRep(SalesRepModel salesRepModel)
         {
-            if (salesRepModel!= null)
+            if (salesRepModel != null)
             {
                 var entity = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel);
                 _context.SaleRep.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true};
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
@@ -39,14 +39,14 @@ namespace SalesRepServices.Services.Implementation
             }
             _context.SaleRep.Remove(salesRepForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true};
         }
 
         public async Task<SalesRepModel> GetByName(string name)
         {
             var entity = await _context.SaleRep
                         .SingleOrDefaultAsync(x => x.FullName == name);
-            if (entity==null)
+            if (entity == null)
             {
                 return new SalesRepModel();
             }
@@ -56,15 +56,15 @@ namespace SalesRepServices.Services.Implementation
 
         public async Task<OperationStatus> Update(SalesRepModel salesRepModel)
         {
-            var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x=>x.SaleRepID == salesRepModel.SaleRepID);
-            if (repUpdate==null)
+            var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x => x.SaleRepID == salesRepModel.SaleRepID);
+            if (repUpdate == null)
             {
                 return new OperationStatus() { IsSuccess = false, Message = "204" };
             }
             var map = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel, repUpdate);
             _context.SaleRep.Update(map);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true};
         }
     }
 }

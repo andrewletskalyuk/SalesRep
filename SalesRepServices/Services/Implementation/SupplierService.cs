@@ -31,7 +31,7 @@ namespace SalesRepServices.Services.Implementation
                 var entity = _mapper.Map<SupplierModel, Supplier>(supplierModel);
                 _context.Suppliers.Add(entity);
                 await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true, Message = "200" };
+                return new OperationStatus() { IsSuccess = true };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
@@ -45,7 +45,7 @@ namespace SalesRepServices.Services.Implementation
             }
             _context.Suppliers.Remove(supplierForDelete);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
 
         public async Task<SupplierModel> GetByTitle(string title)
@@ -59,16 +59,18 @@ namespace SalesRepServices.Services.Implementation
             return _mapper.Map<Supplier, SupplierModel>(entity);
         }
 
-        public async Task<List<ProductModel>> GetProductsOfSupplier(string supplierTitle)
+        //переробити де List
+        public async Task<IList<ProductModel>> GetProductsOfSupplier(string supplierTitle)
         {
             var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == supplierTitle);
             var res = new List<ProductModel>();
             if (supplier != null)
             {
-                IQueryable<Product> products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
+                //IQueryable<Product> products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
+                var products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
                 try
                 {
-                    foreach (var Product in products)
+                    foreach (var Product in products) //ToList() - приведення до 
                     {
                         res.Add(_mapper.Map<Product, ProductModel>(Product));
                     }
@@ -109,7 +111,7 @@ namespace SalesRepServices.Services.Implementation
             var map = _mapper.Map<SupplierModel, Supplier>(supplierModel, supplier);
             _context.Suppliers.Update(map);
             await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true, Message = "200" };
+            return new OperationStatus() { IsSuccess = true };
         }
     }
 }
