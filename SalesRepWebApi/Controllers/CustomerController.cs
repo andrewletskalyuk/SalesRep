@@ -51,7 +51,7 @@ namespace SalesRepWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("UpdateCustomer/{model}")]
+        [HttpPut("UpdateCustomer")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateAsync(CustomerModel customerModel)
         {
@@ -59,7 +59,7 @@ namespace SalesRepWebApi.Controllers
             return Ok(entity);
         }
         
-        [HttpPost("CreateCustomer/{model}")]
+        [HttpPost("CreateCustomer")]
         [ProducesResponseType(200)]
         public async Task<ActionResult> CreateCustomer(CustomerModel customerModel)
         {

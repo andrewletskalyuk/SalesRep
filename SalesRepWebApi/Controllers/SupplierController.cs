@@ -15,7 +15,7 @@ namespace SalesRepWebApi.Controllers
             _supplierService = salesRepService;
         }
 
-        [HttpPost("CreateSupplier/{model}")]
+        [HttpPost("CreateSupplier")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CreateSupplier(SupplierModel supplierModel)
         {
@@ -52,7 +52,7 @@ namespace SalesRepWebApi.Controllers
             return BadRequest();
         }
     
-        [HttpPut("UpdateSupplier/{model}")]
+        [HttpPut("UpdateSupplier")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         public async Task<IActionResult> UpdateSupplier(SupplierModel supplierModel)

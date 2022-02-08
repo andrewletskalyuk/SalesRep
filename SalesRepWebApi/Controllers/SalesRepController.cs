@@ -19,9 +19,8 @@ namespace SalesRepWebApi.Controllers
             _salesRepService = salesRepService;
         }
 
-        [HttpPost("CreateSalesRep/{model}")]
+        [HttpPost("CreateSalesRep")]
         [ProducesResponseType(201)] //created
-        [ProducesResponseType(401)] //Unautorized
         public async Task<IActionResult> CreateSalesRep(SalesRepModel salesRepModel)
         {
             if (salesRepModel != null)
@@ -45,7 +44,7 @@ namespace SalesRepWebApi.Controllers
             return NotFound();
         }
 
-        [HttpPut("UpdateSalesRep/{model}")]
+        [HttpPut("UpdateSalesRep")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> Update(SalesRepModel salesRepModel)
         {
@@ -55,7 +54,6 @@ namespace SalesRepWebApi.Controllers
 
         [HttpDelete("DeleteSalesRepByName/{fullname}")]
         [ProducesResponseType(200)] 
-        [Authorize]
         public async Task<IActionResult> Delete(string fullname)
         {
             await _salesRepService.DeleteByName(fullname);

@@ -79,8 +79,13 @@ namespace SalesRepWebApi
             services.AddScoped<ITradeCompanyService, TradeCompanyService>();
             services.AddScoped<ITradeOrderService, TradeOrderService>();
             services.AddScoped<ILogsReport, LogsReport>();
+            
             services.AddScoped<IProductRepository, ProductRepository>();
-
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ISalesRepRepository, SalesRepRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ITradeCompanyRepository, TradeCompanyRepository>();
+            services.AddScoped<ITradeOrderRepository, TradeOrderRepository>();
             services.AddSwaggerGen();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -54,7 +54,6 @@ namespace SalesRepWebApi.Controllers
         }
 
         [HttpDelete("DeleteProductById/{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             await _productService.DeleteProductById(id);

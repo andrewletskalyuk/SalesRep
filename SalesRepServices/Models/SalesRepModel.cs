@@ -19,7 +19,6 @@ namespace SalesRepServices.Models
         [EmailAddress]
         public string Email { get; set; }
         public bool IsActive { get; set; }
-        [Required]
         public int TradeCompanyID { get; set; }
         List<TradeOrderModel> TradeOrders { get; set; }
     }

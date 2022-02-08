@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
-using SalesRepServices.Helpers;
+using SalesRepDAL.Helpers;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace SalesRepServices.Services.Implementation
 {
     public class SalesRepService : ISalesRepService
     {
-        private readonly EFContext _context;
         private readonly IMapper _mapper;
-        public SalesRepService(EFContext context, IMapper mapper)
+        private readonly ISalesRepRepository _salesRepRepository;
+        public SalesRepService(IMapper mapper, ISalesRepRepository salesRepRepository)
         {
-            _context = context;
+            _salesRepRepository = salesRepRepository;
             _mapper = mapper;
         }
         public async Task<OperationStatus> CreateRep(SalesRepModel salesRepModel)
@@ -23,48 +24,40 @@ namespace SalesRepServices.Services.Implementation
             if (salesRepModel != null)
             {
                 var entity = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel);
-                _context.SaleRep.Add(entity);
-                await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true};
+                var res = await _salesRepRepository.CreateRep(entity);
+                return res;
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
 
         public async Task<OperationStatus> DeleteByName(string name)
         {
-            var salesRepForDelete = await _context.SaleRep.FirstOrDefaultAsync(x => x.FullName == name);
-            if (salesRepForDelete == null)
+            if (!string.IsNullOrEmpty(name))
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                var res = await _salesRepRepository.DeleteByName(name);
+                return res;
             }
-            _context.SaleRep.Remove(salesRepForDelete);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true};
+            return new OperationStatus() { IsSuccess = false, Message = "SaleRep wasn't found!" };
         }
 
         public async Task<SalesRepModel> GetByName(string name)
         {
-            var entity = await _context.SaleRep
-                        .SingleOrDefaultAsync(x => x.FullName == name);
+            var entity = await _salesRepRepository.GetByName(name);
             if (entity == null)
             {
                 return new SalesRepModel();
             }
             return _mapper.Map<SaleRep, SalesRepModel>(entity);
-
         }
 
         public async Task<OperationStatus> Update(SalesRepModel salesRepModel)
         {
-            var repUpdate = await _context.SaleRep.FirstOrDefaultAsync(x => x.SaleRepID == salesRepModel.SaleRepID);
-            if (repUpdate == null)
+            if (salesRepModel != null)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                return await _salesRepRepository
+                        .Update(_mapper.Map<SalesRepModel, SaleRep>(salesRepModel));
             }
-            var map = _mapper.Map<SalesRepModel, SaleRep>(salesRepModel, repUpdate);
-            _context.SaleRep.Update(map);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true};
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
     }
 }

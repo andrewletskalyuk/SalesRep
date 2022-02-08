@@ -19,7 +19,7 @@ namespace SalesRepWebApi.Controllers
             _logs = logs;
         }
 
-        [HttpPost("CreateOrder/{model}")]
+        [HttpPost("CreateOrder")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CreateOrder(TradeOrderModel orderModel)
         {

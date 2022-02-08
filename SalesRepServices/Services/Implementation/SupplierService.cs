@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SalesRepDAL;
 using SalesRepDAL.Entities;
-using SalesRepServices.Helpers;
+using SalesRepDAL.Helpers;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_Interfaces;
@@ -15,103 +15,94 @@ namespace SalesRepServices.Services.Implementation
 {
     public class SupplierService : ISupplierService
     {
-        private readonly EFContext _context;
+        private readonly ISupplierRepository _supplierRepository;
         private readonly IMapper _mapper;
         private readonly ILogsReport _logsReport;
-        public SupplierService(EFContext context, IMapper mapper, ILogsReport logsReport)
+        public SupplierService(IMapper mapper, ILogsReport logsReport, ISupplierRepository supplierRepository)
         {
-            _context = context;
             _mapper = mapper;
             _logsReport = logsReport;
+            _supplierRepository = supplierRepository;
         }
         public async Task<OperationStatus> CreateSupplier(SupplierModel supplierModel)
         {
             if (supplierModel != null)
             {
-                var entity = _mapper.Map<SupplierModel, Supplier>(supplierModel);
-                _context.Suppliers.Add(entity);
-                await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true };
+                return await _supplierRepository.CreateSupplier(_mapper.Map<SupplierModel, Supplier>(supplierModel));
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
 
         public async Task<OperationStatus> Delete(string title)
         {
-            var supplierForDelete = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == title);
-            if (supplierForDelete == null)
+            if (!String.IsNullOrEmpty(title))
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                return await _supplierRepository.Delete(title);
             }
-            _context.Suppliers.Remove(supplierForDelete);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
 
         public async Task<SupplierModel> GetByTitle(string title)
         {
-            var entity = await _context.Suppliers
-                        .SingleOrDefaultAsync(x => x.Title == title);
-            if (entity == null)
+            if (!String.IsNullOrEmpty(title))
             {
-                return new SupplierModel();
+                var res = await _supplierRepository.GetByTitle(title);
+                var map = _mapper.Map<Supplier, SupplierModel>(res);
+                return map;
             }
-            return _mapper.Map<Supplier, SupplierModel>(entity);
+            return new SupplierModel();
         }
 
-        //переробити де List
         public async Task<IList<ProductModel>> GetProductsOfSupplier(string supplierTitle)
         {
-            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.Title == supplierTitle);
-            var res = new List<ProductModel>();
-            if (supplier != null)
+            var listOfProduct = new List<ProductModel>();
+            if (!String.IsNullOrEmpty(supplierTitle))
             {
-                //IQueryable<Product> products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
-                var products = _context.Products.Where(x => x.SupplierID == supplier.SupplierID);
-                try
+                var products = await _supplierRepository.GetProductsOfSupplier(supplierTitle);
+                if (products.ToList().Count > 0)
                 {
-                    foreach (var Product in products) //ToList() - приведення до 
+                    try
                     {
-                        res.Add(_mapper.Map<Product, ProductModel>(Product));
+                        foreach (var Product in products) //ToList
+                        {
+                            listOfProduct.Add(_mapper.Map<Product, ProductModel>(Product));
+                        }
+                        return listOfProduct;
                     }
-                    return res;
-                }
-                catch (Exception ex)
-                {
-                    _logsReport.AnotherExeption(ex);
+                    catch (Exception ex)
+                    {
+                        _logsReport.AnotherExeption(ex);
+                    }
                 }
             }
-            return res;
+            return listOfProduct;
         }
 
         public async Task<List<SupplierModel>> SearchByTitle(string text)
         {
-            IQueryable<Supplier> suppliers = _context.Suppliers
-                                                .Where(x => x.Title.Contains(text) 
-                                                      && !String.IsNullOrEmpty(text));
             var res = new List<SupplierModel>();
-            if (suppliers!=null)
+            if (!String.IsNullOrEmpty(text))
             {
-                foreach (var Supplier in suppliers)
+                var suppliers = _supplierRepository.SearchByTitle(text);
+                if (suppliers != null)
                 {
-                    res.Add(_mapper.Map<Supplier, SupplierModel>(Supplier));
+                    foreach (var Supplier in suppliers.Result)
+                    {
+                        res.Add(_mapper.Map<Supplier, SupplierModel>(Supplier));
+                    }
+                    return res;
                 }
-                return res;
             }
             return res;
         }
 
         public async Task<OperationStatus> Update(SupplierModel supplierModel)
         {
-            var supplier = await _context.Suppliers.FirstOrDefaultAsync(x => x.SupplierID == supplierModel.SupplierID);
-            if (supplier == null)
+            if (supplierModel != null)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                return await _supplierRepository.Update(_mapper.Map<SupplierModel, Supplier>(supplierModel));
             }
-            var map = _mapper.Map<SupplierModel, Supplier>(supplierModel, supplier);
-            _context.Suppliers.Update(map);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
     }
 }

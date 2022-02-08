@@ -3,10 +3,12 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
-using SalesRepServices.Helpers;
+using SalesRepDAL.Helpers;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,57 +16,62 @@ namespace SalesRepServices.Services.Implementation
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IConfigurationProvider _mappingConguration;
-        private readonly EFContext _context;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
-        public CustomerService(EFContext context, IMapper mapper, IConfigurationProvider mapConfiguration)
+        public CustomerService(IMapper mapper, ICustomerRepository customerRepository)
         {
-            _mappingConguration = mapConfiguration;
-            _context = context;
             _mapper = mapper;
+            _customerRepository = customerRepository;
         }
 
         public async Task<IEnumerable<CustomerModel>> GetCustomersAsync()
         {
-            var query = _context.Customers.ProjectTo<CustomerModel>(_mappingConguration);
-            return await query.ToArrayAsync();
+            var query = await _customerRepository.GetCustomersAsync();
+            IList<CustomerModel> res = new List<CustomerModel>();
+            if (query != null)
+            {
+                foreach (var customer in query)
+                {
+                    res.Add(_mapper.Map<Customer, CustomerModel>(customer));
+                }
+                return res;
+            }
+            return res;
         }
 
         public async Task<CustomerModel> GetById(int id)
         {
-            var entity = await _context.Customers
-                             .SingleOrDefaultAsync(x => x.CusomerID == id);
-
-            if (entity == null)
+            if (id != 0)
             {
-                return null;
+                var entity = await _customerRepository.GetById(id);
+                if (entity != null)
+                {
+                    return _mapper.Map<Customer, CustomerModel>(entity);
+                }
             }
-            return _mapper.Map<Customer, CustomerModel>(entity);
+            return new CustomerModel();
         }
 
         public async Task<OperationStatus> DeleteCustomerById(int id)
         {
-            var customerForDelete = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == id);
-            if (customerForDelete == null)
+            var operationStatus = await _customerRepository.DeleteCustomerById(id);
+            if (operationStatus.IsSuccess)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "No Content" };
+                return new OperationStatus() { IsSuccess = true };
             }
-            _context.Customers.Remove(customerForDelete);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
 
         public async Task<OperationStatus> UpdateAsync(CustomerModel customerModel)
         {
-            var customerForUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.CusomerID == customerModel.CusomerID);
-            if (customerForUpdate == null)
+            if (customerModel != null)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "User Not Found" };
+                var temp = new Customer();
+                var map = _mapper.Map<CustomerModel, Customer>(customerModel,temp);
+                var res = await _customerRepository.UpdateAsync(map);
+                return res;
             }
-            var map = _mapper.Map<CustomerModel, Customer>(customerModel, customerForUpdate);
-            _context.Customers.Update(map);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
 
         public async Task<OperationStatus> CreateCustomer(CustomerModel customerModel)
@@ -72,9 +79,7 @@ namespace SalesRepServices.Services.Implementation
             if (customerModel != null)
             {
                 var entity = _mapper.Map<CustomerModel, Customer>(customerModel);
-                _context.Customers.Add(entity);
-                await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true };
+                return await _customerRepository.CreateCustomer(entity);
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }

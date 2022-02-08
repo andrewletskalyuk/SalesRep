@@ -2,68 +2,64 @@
 using Microsoft.EntityFrameworkCore;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
-using SalesRepServices.Helpers;
+using SalesRepDAL.Helpers;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Implementation
 {
     public class TradeCompanyService : ITradeCompanyService
     {
-        private readonly EFContext _context;
+        private readonly ITradeCompanyRepository _tradeCompanyRepository;
         private readonly IMapper _mapper;
-        public TradeCompanyService(EFContext context, IMapper mapper)
+        public TradeCompanyService(IMapper mapper, ITradeCompanyRepository tradeCompanyRepository)
         {
-            _context = context;
             _mapper = mapper;
+            _tradeCompanyRepository = tradeCompanyRepository;
         }
         public async Task<OperationStatus> CreateCompany(TradeCompanyModel tradeCompanyModel)
         {
-            if (tradeCompanyModel!=null)
+            if (tradeCompanyModel != null)
             {
                 var entity = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel);
-                _context.Trades.Add(entity);
-                await _context.SaveChangesAsync();
-                return new OperationStatus() { IsSuccess = true };
+                if (entity != null)
+                {
+                    return await _tradeCompanyRepository.CreateCompany(entity);
+                }
+                return new OperationStatus() { IsSuccess = false, Message = "Company wasn't created" };
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!!!" };
         }
-
         public async Task<OperationStatus> Delete(string title)
         {
-            var tdForDelete = await _context.Trades.FirstOrDefaultAsync(x=>x.Title==title);
-            if (tdForDelete==null)
+            if (!string.IsNullOrEmpty(title))
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                return await _tradeCompanyRepository.Delete(title);
             }
-            _context.Trades.Remove(tdForDelete);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
-
         public async Task<TradeCompanyModel> GetCompanyByTitle(string title)
         {
-            var entity = await _context.Trades
-                                .SingleOrDefaultAsync(x=>x.Title==title);
-            if (entity==null)
+            if (!String.IsNullOrEmpty(title))
             {
-                return new TradeCompanyModel();
+                var company = await _tradeCompanyRepository.GetCompanyByTitle(title);
+                var res = _mapper.Map<TradeCompany, TradeCompanyModel>(company);
+                return res; 
             }
-            return _mapper.Map<TradeCompany, TradeCompanyModel>(entity);
+            return new TradeCompanyModel();
         }
 
         public async Task<OperationStatus> Update(TradeCompanyModel tradeCompanyModel)
         {
-            var tc = await _context.Trades.FirstOrDefaultAsync(x=>x.TradeCompanyID==tradeCompanyModel.TradeCompanyID);
-            if (tc==null)
+            if (tradeCompanyModel!=null)
             {
-                return new OperationStatus() { IsSuccess = false, Message = "204" };
+                var map = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel,new TradeCompany());
+                return await _tradeCompanyRepository.Update(map);
             }
-            var maptc = _mapper.Map<TradeCompanyModel, TradeCompany>(tradeCompanyModel, tc);
-            _context.Trades.Update(maptc);
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            return new OperationStatus() { IsSuccess = false, Message="Huston we have a problem!" };
         }
     }
 }

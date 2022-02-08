@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SalesRepServices.Helpers
+namespace SalesRepDAL.Helpers
 {
     public class OperationStatus
     {

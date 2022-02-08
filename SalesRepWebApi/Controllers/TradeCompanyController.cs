@@ -17,13 +17,13 @@ namespace SalesRepWebApi.Controllers
             _tcService = tcService;
         }
 
-        [HttpPost("CreateCompany/{model}")]
+        [HttpPost("CreateCompany")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CreateCompany(TradeCompanyModel tcViewModel)
+        public async Task<IActionResult> CreateCompany(TradeCompanyModel tradeCompanyModel)
         {
-            if (tcViewModel!=null)
+            if (tradeCompanyModel!=null)
             {
-                await _tcService.CreateCompany(tcViewModel);
+                await _tcService.CreateCompany(tradeCompanyModel);
                 return Ok();
             }
             return BadRequest();
