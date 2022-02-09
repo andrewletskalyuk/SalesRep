@@ -43,7 +43,6 @@ namespace SalesRepWebApi.Controllers
         }
 
         [HttpDelete("DeleteCustomerByID/{id}")]
-        [Authorize]
         [ProducesResponseType(204)]
         public async Task<IActionResult> DeleteById(int id)
         {

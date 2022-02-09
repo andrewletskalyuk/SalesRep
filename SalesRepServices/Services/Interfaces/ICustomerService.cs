@@ -10,7 +10,7 @@ namespace SalesRepServices.Services.Interfaces
         Task<IEnumerable<CustomerModel>> GetCustomersAsync();
         Task<CustomerModel> GetById(int id);
         Task<OperationStatus> DeleteCustomerById(int id);
-        Task<OperationStatus> UpdateAsync(CustomerModel modelCustomerDTO);
-        Task<OperationStatus> CreateCustomer(CustomerModel customerDTO);
+        Task<OperationStatus> UpdateAsync(CustomerModel customerModel);
+        Task<OperationStatus> CreateCustomer(CustomerModel customerModel);
     }
 }

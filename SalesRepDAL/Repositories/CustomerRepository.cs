@@ -26,11 +26,14 @@ namespace SalesRepDAL.Repositories
         }
         public async Task<OperationStatus> DeleteCustomerById(int id)
         {
-            _context.Customers
-                    .Remove(await _context.Customers
-                                          .FirstOrDefaultAsync(x => x.CusomerID == id));
-            await _context.SaveChangesAsync();
-            return new OperationStatus() { IsSuccess = true };
+            var customerForDelete = await _context.Customers.FirstOrDefaultAsync(x => x.CusomerID == id);
+            if (customerForDelete != null)
+            {
+                _context.Customers.Remove(customerForDelete);
+                await _context.SaveChangesAsync();
+                return new OperationStatus() { IsSuccess = true };
+            }
+            return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
         public async Task<OperationStatus> UpdateAsync(Customer customer)
         {

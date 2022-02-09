@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using SalesRepDAL;
 using SalesRepDAL.Entities;
 using SalesRepDAL.Helpers;
 using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

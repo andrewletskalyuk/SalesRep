@@ -4,6 +4,7 @@ namespace SalesRepServices.Models
 {
     public class CustomerModel
     {
+        [Key]
         public int CusomerID { get; set; }
         public string Title { get; set; }
         public string Address { get; set; }
