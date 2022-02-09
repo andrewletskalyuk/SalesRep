@@ -91,11 +91,11 @@ namespace SalesRepUnitTests.Services
             _repository.Setup(x => x.GetByTitle(DEFAULT_STRING)).Returns(Task.FromResult(product));
 
             //Act
-            var result = _productService.GetByTitle(DEFAULT_STRING);
+            var result = _productService.GetByTitle(DEFAULT_STRING).GetAwaiter().GetResult();
 
             //Assert
             Assert.NotNull(result);
-            Assert.Equal(result.Result.Title, product.Title);
+            Assert.Equal(result.Title, product.Title);
         }
 
         [Fact]
