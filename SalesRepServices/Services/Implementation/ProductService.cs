@@ -33,7 +33,7 @@ namespace SalesRepServices.Services.Implementation
         }
         public async Task<OperationStatus> DeleteProductById(int id)
         {
-            if (id != 0)
+            if (id >= 0)
             {
                 var res = await _productRepository.DeleteProductById(id);
                 return res;

@@ -7,10 +7,8 @@ using SalesRepServices.MappingProfiles;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Implementation;
 using SalesRepServices.Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -50,11 +48,11 @@ namespace SalesRepUnitTests.Services
             _repository.Setup(x => x.CreateCustomer(It.IsAny<Customer>())).ReturnsAsync(new OperationStatus() { IsSuccess = true });
 
             //Act
-            var res = _customerService.CreateCustomer(model).GetAwaiter().GetResult();
+            var result = _customerService.CreateCustomer(model).GetAwaiter().GetResult();
 
             //Assert
-            Assert.NotNull(res);
-            Assert.True(res.IsSuccess);
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
         }
 
         [Fact]
@@ -72,7 +70,7 @@ namespace SalesRepUnitTests.Services
 
             //Act 
             var result = _customerService.GetCustomersAsync().GetAwaiter().GetResult();
-
+            
             //Assert
             Assert.NotNull(result);
             Assert.Equal(customers.Count(), result.Count());

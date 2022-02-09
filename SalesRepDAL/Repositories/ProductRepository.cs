@@ -27,9 +27,8 @@ namespace SalesRepDAL.Repositories
         }
         public async Task<OperationStatus> DeleteProductById(int id)
         {
-            _context.Products
-                    .Remove(_context.Products
-                                    .FirstOrDefault(x => x.ProductID == id));
+            var productDelete = _context.Products.FirstOrDefault(x => x.ProductID == id);
+            _context.Products.Remove(productDelete);
             await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = true };
         }
