@@ -11,7 +11,7 @@ namespace SalesRepDAL.Repositories
     public class SupplierRepository : ISupplierRepository
     {
         private readonly EFContext _context;
-        public SupplierRepository(EFContext context)
+        public SupplierRepository(Microsoft.EntityFrameworkCore.DbContextOptions<EFContext> dbContextOptions, EFContext context)
         {
             _context = context;
         }

@@ -18,6 +18,11 @@ namespace SalesRepServices.Services.Implementation
         private readonly ISupplierRepository _supplierRepository;
         private readonly IMapper _mapper;
         private readonly ILogsReport _logsReport;
+        public SupplierService(IMapper mapper, ISupplierRepository supplierRepository)
+        {
+            _mapper = mapper;
+            _supplierRepository = supplierRepository;
+        }
         public SupplierService(IMapper mapper, ILogsReport logsReport, ISupplierRepository supplierRepository)
         {
             _mapper = mapper;
@@ -100,7 +105,9 @@ namespace SalesRepServices.Services.Implementation
         {
             if (supplierModel != null)
             {
-                return await _supplierRepository.Update(_mapper.Map<SupplierModel, Supplier>(supplierModel));
+                var supplier = new Supplier();
+                var model = _mapper.Map<SupplierModel,Supplier>(supplierModel, supplier);
+                return await _supplierRepository.Update(model);
             }
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
