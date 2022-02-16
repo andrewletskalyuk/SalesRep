@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SalesRepDAL;
+﻿using Microsoft.AspNetCore.Mvc;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using System.Threading.Tasks;

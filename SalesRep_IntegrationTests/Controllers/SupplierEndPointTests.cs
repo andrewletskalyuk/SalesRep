@@ -26,7 +26,6 @@ namespace SalesRep_IntegrationTests.Controllers
         private const string DEFAULT_STRING = "DEFAULT_STRING";
         private const string DEFAULT_PHONE = "+380671112233";
         private const string DEFAULT_EMAIL = "defaultemail@gmail.com";
-        private const int DEFAULT_INT = 100;
 
         public SupplierEndPointTests()
         {
@@ -57,7 +56,7 @@ namespace SalesRep_IntegrationTests.Controllers
             };
 
             //Act
-            var result = _repository.CreateSupplier(_mapper.Map<SupplierModel, Supplier>(supplierModel)).GetAwaiter().GetResult();
+            var result = _supplierService.CreateSupplier(supplierModel).GetAwaiter().GetResult();
 
             //Assert
             Assert.NotNull(result);
@@ -110,5 +109,52 @@ namespace SalesRep_IntegrationTests.Controllers
             Assert.True(result.IsSuccess);
         }
 
+        [Fact]
+        public void DeleteSupplier_ReturnOperationStatus()
+        {
+            //Arrange
+            var supplierModel = new SupplierModel()
+            {
+                Title = DEFAULT_STRING,
+                Email = DEFAULT_EMAIL,
+                Phone = DEFAULT_PHONE,
+                IsActive = true,
+                Address = DEFAULT_STRING,
+                AdditionalInfo = DEFAULT_STRING
+            };
+            var resultCreatedForDelete = _repository.CreateSupplier(_mapper.Map<SupplierModel, Supplier>(supplierModel)).GetAwaiter().GetResult();
+
+            //Act
+            var result = _supplierService.Delete(DEFAULT_STRING).GetAwaiter().GetResult();
+
+            //Assert
+            Assert.NotNull(resultCreatedForDelete);
+            Assert.NotNull(result);
+            Assert.Equal(resultCreatedForDelete.IsSuccess, result.IsSuccess);
+        }
+
+        [Fact]
+        public void SearchByTitle_ReturnSupplierModel()
+        {
+            //Arrange
+            var supplierModel = new SupplierModel()
+            {
+                Title = DEFAULT_STRING,
+                Email = DEFAULT_EMAIL,
+                Phone = DEFAULT_PHONE,
+                IsActive = true,
+                Address = DEFAULT_STRING,
+                AdditionalInfo = DEFAULT_STRING
+            };
+            var resultCreatedForSearch = _repository.CreateSupplier(_mapper.Map<SupplierModel, Supplier>(supplierModel)).GetAwaiter().GetResult();
+
+            //Act
+            var result = _supplierService.SearchByTitle(DEFAULT_STRING).GetAwaiter().GetResult();
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.NotNull(resultCreatedForSearch);
+            Assert.True(result.Count >= 0);
+        }
     }
 }
