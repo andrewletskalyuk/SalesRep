@@ -1,4 +1,5 @@
-﻿using SalesRepDAL.Entities;
+﻿using SalesRepDAL.Attributes;
+using SalesRepDAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ namespace SalesRepServices.Models
         [Required]
         [StringLength(22, MinimumLength = 10)]
         public string Phone { get; set; }
+        [EmailValidation]
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public string AdditionalInfo { get; set; }

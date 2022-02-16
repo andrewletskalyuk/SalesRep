@@ -92,14 +92,6 @@ namespace SalesRepServices.Services.Implementation
                 var map = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel, temp);
                 return await _tradeOrderRepository.Update(map);
             }
-            //var to = await _context.TradeOrders.FirstOrDefaultAsync(x => x.TradeOrderID == tradeOrderModel.TradeOrderID);
-            //if (to == null)
-            //{
-            //    return new OperationStatus() { IsSuccess = true, Message = "204" };
-            //}
-            //var mapTO = _mapper.Map<TradeOrderModel, TradeOrder>(tradeOrderModel, to);
-            //_context.TradeOrders.Update(mapTO);
-            //await _context.SaveChangesAsync();
             return new OperationStatus() { IsSuccess = false, Message = "Huston we have a problem!" };
         }
     }
