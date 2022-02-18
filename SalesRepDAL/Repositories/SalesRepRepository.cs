@@ -1,6 +1,8 @@
-﻿using SalesRepDAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesRepDAL.Entities;
 using SalesRepDAL.Helpers;
 using SalesRepDAL.Repositories.Contracts;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +31,22 @@ namespace SalesRepDAL.Repositories
         {
             return _context.SaleRep.FirstOrDefault(x => x.FullName == name);
         }
+
+        public async Task<IList<CustomerOfSalesRepModel>> GetCustomersOfSalesRep(string nameSalesRep)
+        {
+            var result = from tradeO in _context.TradeOrders
+                         join cust in _context.Customers on tradeO.CustomerID equals cust.CusomerID
+                         join salesRep in _context.SaleRep on tradeO.SalesRepID equals salesRep.SaleRepID
+                         where salesRep.FullName == nameSalesRep
+                         select new CustomerOfSalesRepModel { Title = cust.Title, Address = cust.Address };
+            var models = new List<CustomerOfSalesRepModel>();
+            foreach (var item in result)
+            {
+                models.Add(item);
+            }
+            return models;
+        }
+
         public async Task<OperationStatus> Update(SaleRep saleRep)
         {
             var company = _context.Trades.FirstOrDefault(x => x.TradeCompanyID == saleRep.TradeCompanyID);

@@ -59,6 +59,15 @@ namespace SalesRepWebApi.Controllers
             await _salesRepService.DeleteByName(fullname);
             return Ok();
         }
+
+        [HttpGet("CustomersOfSalesRep/{nameSalesRep}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetCustomersOfSalesRep(string nameSalesRep)
+        {
+            var resultSalesRes = await _salesRepService.GetCustomersOfSalesRep(nameSalesRep);
+                    
+            return Ok(resultSalesRes);
+        }
     }
 }
 

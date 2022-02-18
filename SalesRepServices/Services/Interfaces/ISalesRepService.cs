@@ -1,5 +1,8 @@
-﻿using SalesRepDAL.Helpers;
+﻿using SalesRepDAL.Entities;
+using SalesRepDAL.Helpers;
 using SalesRepServices.Models;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Interfaces
@@ -10,5 +13,6 @@ namespace SalesRepServices.Services.Interfaces
         Task<SalesRepModel> GetByName(string name);
         Task<OperationStatus> Update(SalesRepModel salesRepModel);
         Task<OperationStatus> DeleteByName(string name);
+        Task<IList<CustomerOfSalesRepModel>> GetCustomersOfSalesRep(string nameSalesRep);
     }
 }

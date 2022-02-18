@@ -6,6 +6,8 @@ using SalesRepDAL.Helpers;
 using SalesRepDAL.Repositories.Contracts;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesRepServices.Services.Implementation
@@ -48,6 +50,11 @@ namespace SalesRepServices.Services.Implementation
                 return new SalesRepModel();
             }
             return _mapper.Map<SaleRep, SalesRepModel>(entity);
+        }
+
+        public async Task<IList<CustomerOfSalesRepModel>> GetCustomersOfSalesRep(string nameSalesRep)
+        {
+            return await _salesRepRepository.GetCustomersOfSalesRep(nameSalesRep);
         }
 
         public async Task<OperationStatus> Update(SalesRepModel salesRepModel)
