@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SalesRepDAL.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,11 +9,14 @@ namespace SalesRepDAL.Entities
     {
         [Key]
         public int SupplierID { get; set; }
+        [Required]
+        public string Title { get; set; }
         public string Address { get; set; }
         [Required]
         [StringLength(22, MinimumLength = 10)]
         public string Phone { get; set; }
-        [EmailAddress]
+        //[EmailAddress]
+        [EmailValidation]
         public string Email { get; set; }
         [DefaultValue(true)]
         public bool IsActive { get; set; }

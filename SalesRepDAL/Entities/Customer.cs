@@ -18,6 +18,6 @@ namespace SalesRepDAL.Entities
         [Required]
         public string Phone { get; set; }
         public string AdditionalInfo { get; set; }
-        public List<TradeOrder> TradeOrders { get; set; } = new List<TradeOrder>();
+        public List<TradeOrder> TradeOrders { get; set; }
     }
 }
