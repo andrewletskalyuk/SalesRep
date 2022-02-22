@@ -51,7 +51,13 @@ namespace SalesRepServices.Services.Implementation
 
         public async Task<IList<CustomerOfSalesRepModel>> GetCustomersOfSalesRep(string nameSalesRep)
         {
-            return await _salesRepRepository.GetCustomersOfSalesRep(nameSalesRep);
+            var result = await _salesRepRepository.GetCustomersOfSalesRep(nameSalesRep);
+            if (result!=null)
+            {
+                return result;
+            }
+            var list = new List<CustomerOfSalesRepModel>();
+            return list;
         }
 
         public async Task<OperationStatus> Update(SalesRepModel salesRepModel)

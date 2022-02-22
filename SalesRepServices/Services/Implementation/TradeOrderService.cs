@@ -19,6 +19,11 @@ namespace SalesRepServices.Services.Implementation
         private readonly IMapper _mapper;
         private readonly ILogsReport _logsReport;
         private readonly ITradeOrderRepository _tradeOrderRepository;
+        public TradeOrderService(IMapper mapper, ITradeOrderRepository tradeOrderRepository)
+        {
+            _mapper = mapper;
+            _tradeOrderRepository = tradeOrderRepository;
+        }
         public TradeOrderService(IMapper mapper, ILogsReport logsReport, ITradeOrderRepository tradeOrderRepository)
         {
             _mapper = mapper;
