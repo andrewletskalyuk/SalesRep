@@ -3,6 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SalesRepDAL;
 
 namespace SalesRepDAL.Migrations
 {
@@ -354,6 +356,10 @@ namespace SalesRepDAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(22)")
                         .HasMaxLength(22);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SupplierID");
 

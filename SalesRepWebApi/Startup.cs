@@ -9,9 +9,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SalesRepDAL;
 using SalesRepDAL.Entities;
+using SalesRepDAL.Repositories;
+using SalesRepDAL.Repositories.Contracts;
 using SalesRepDAL.Seeders;
+using SalesRepServices.Services.Implementation;
+using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
 using SalesRepServices.Services_Interfaces;
+using System;
 using System.Text;
 
 namespace SalesRepWebApi
@@ -31,6 +36,7 @@ namespace SalesRepWebApi
             services.AddControllers();
             services.AddScoped<EFContext>();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            //we're using in memory database for a quick dev and testing
             services.AddDbContext<EFContext>(options =>
                         options.UseSqlServer(connectionString));
             services.AddIdentity<DbUser, DbRole>(options =>
@@ -65,7 +71,24 @@ namespace SalesRepWebApi
                 };
             });
 
+            //services
+            services.AddScoped<ICustomerService,CustomerService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISalesRepService, SalesRepService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<ITradeCompanyService, TradeCompanyService>();
+            services.AddScoped<ITradeOrderService, TradeOrderService>();
+            services.AddScoped<ILogsReport, LogsReport>();
+            
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ISalesRepRepository, SalesRepRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ITradeCompanyRepository, TradeCompanyRepository>();
+            services.AddScoped<ITradeOrderRepository, TradeOrderRepository>();
             services.AddSwaggerGen();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,8 +125,8 @@ namespace SalesRepWebApi
                     );
             });
 
-            //seeder
-            SeedDataToDB.SeedData(app.ApplicationServices);
+            //seeder temporary method
+            //SeedDataToDB.SeedData(app.ApplicationServices);
         }
     }
 }

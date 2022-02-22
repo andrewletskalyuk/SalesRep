@@ -129,9 +129,9 @@ namespace SalesRepDAL.Seeders
             efcontext.SaleRep.Add(saleRep3);
             efcontext.SaveChanges();
 
-            Supplier supplier = new Supplier() { Address = "Dubno", Email = "dubno@gmail.com", IsActive = true, Phone = "+380631112233" };
-            Supplier supplier1 = new Supplier() { Address = "Lviv", Email = "lviv@gmail.com", IsActive = true, Phone = "+380931112233" };
-            Supplier supplier2 = new Supplier() { Address = "Kyiv", Email = "kyiv@gmail.com", IsActive = true, Phone = "+380678765321" };
+            Supplier supplier = new Supplier() {Title="Mint", Address = "Dubno", Email = "dubno@gmail.com", IsActive = true, Phone = "+380631112233" };
+            Supplier supplier1 = new Supplier() {Title="FromParis", Address = "Lviv", Email = "lviv@gmail.com", IsActive = true, Phone = "+380931112233" };
+            Supplier supplier2 = new Supplier() {Title="Diamont", Address = "Kyiv", Email = "kyiv@gmail.com", IsActive = true, Phone = "+380678765321" };
             efcontext.Suppliers.Add(supplier);
             efcontext.Suppliers.Add(supplier1);
             efcontext.Suppliers.Add(supplier2);
