@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRepWebApi", "SalesRepW
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{61D2AF06-BDDA-4C89-B2A1-CF98E3C21E47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesRepUnitTests", "SalesRepUnitTests\SalesRepUnitTests.csproj", "{BD50CE6E-0D78-4A9C-8063-F108A528D433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRepUnitTests", "SalesRepUnitTests\SalesRepUnitTests.csproj", "{BD50CE6E-0D78-4A9C-8063-F108A528D433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesRep_IntegrationTests", "SalesRep_IntegrationTests\SalesRep_IntegrationTests.csproj", "{2AF9E5A8-D442-48B3-837A-29302CD5B315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRep_IntegrationTests", "SalesRep_IntegrationTests\SalesRep_IntegrationTests.csproj", "{2AF9E5A8-D442-48B3-837A-29302CD5B315}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeMicroservice", "..\MicroServiceArchitecture\TradeMicroservice\TradeMicroservice.csproj", "{335F2A13-74FB-4D34-8E67-4B48CE39CE64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
