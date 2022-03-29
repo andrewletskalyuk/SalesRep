@@ -114,6 +114,8 @@ namespace SalesRepWebApi
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<ITradeCompanyRepository, TradeCompanyRepository>();
             services.AddScoped<ITradeOrderRepository, TradeOrderRepository>();
+            services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
+            services.AddScoped<IBotService, BotService>();
             services.AddSwaggerGen();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

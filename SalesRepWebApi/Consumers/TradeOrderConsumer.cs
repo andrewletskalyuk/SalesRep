@@ -27,7 +27,6 @@ namespace SalesRepWebApi.Consumers
                 {
                     var tradeOrderModel = _mapper.Map<TradeOrder, TradeOrderModel>(data);
                     await _tradeOrderService.CreateOrder(tradeOrderModel);
-                    //in this case we're saved data to DB
                 }
                 catch (Exception ex)
                 {
@@ -35,22 +34,21 @@ namespace SalesRepWebApi.Consumers
                 }
             }
         }
-        public async Task Consume(ConsumeContext<TradeOrderID> tradeOrder)
-        {
-            var data = tradeOrder.Message;
-            //validation data
-            if (data != null && data.Id != 0)
-            {
-                try
-                {
-                    await _tradeOrderService.Delete(data.Id);
-                    //in this case we're saved data to DB
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
+        //public async Task Consume(ConsumeContext<TradeOrderID> tradeOrder)
+        //{
+        //    //var data = int.Parse(id);
+        //    var data = tradeOrder.Message;
+        //    if (data != null)
+        //    {
+        //        try
+        //        {
+        //            await _tradeOrderService.Delete(data.Id);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine(ex.Message);
+        //        }
+        //    }
+        //}
     }
 }

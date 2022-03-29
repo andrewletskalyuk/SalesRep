@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRep_IntegrationTests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeMicroservice", "..\MicroServiceArchitecture\TradeMicroservice\TradeMicroservice.csproj", "{335F2A13-74FB-4D34-8E67-4B48CE39CE64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetaMicroservice", "BetaMicroservice\BetaMicroservice.csproj", "{135A57FF-BC0C-42D1-85A4-9D1F995509F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{335F2A13-74FB-4D34-8E67-4B48CE39CE64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

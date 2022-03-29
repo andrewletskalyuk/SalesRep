@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesRepDAL.Entities;
 using SalesRepServices.Models;
 using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_Interfaces;
@@ -47,7 +48,7 @@ namespace SalesRepWebApi.Controllers
             }
             return BadRequest();
         }
-
+        
         [HttpGet("GetOrdersOfCustomer/{id}")]
         public async Task<IActionResult> GetOrders(int customerId)
         {
