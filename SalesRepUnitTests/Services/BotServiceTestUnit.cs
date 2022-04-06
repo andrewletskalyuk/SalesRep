@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using SalesRepDAL.Entities;
 using SalesRepDAL.Helpers;
 using SalesRepDAL.Repositories.Contracts;
