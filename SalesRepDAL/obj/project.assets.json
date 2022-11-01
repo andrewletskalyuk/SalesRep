@@ -7682,25 +7682,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Andrii_Letskaliuk\\.nuget\\packages\\": {},
+    "C:\\Users\\Andrii\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Andrii_Letskaliuk\\source\\repos\\SalesRepTC\\SalesRepDAL\\SalesRepDAL.csproj",
+      "projectUniqueName": "F:\\EPAM\\SalesRep\\SalesRep\\SalesRepDAL\\SalesRepDAL.csproj",
       "projectName": "SalesRepDAL",
-      "projectPath": "C:\\Users\\Andrii_Letskaliuk\\source\\repos\\SalesRepTC\\SalesRepDAL\\SalesRepDAL.csproj",
-      "packagesPath": "C:\\Users\\Andrii_Letskaliuk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Andrii_Letskaliuk\\source\\repos\\SalesRepTC\\SalesRepDAL\\obj\\",
+      "projectPath": "F:\\EPAM\\SalesRep\\SalesRep\\SalesRepDAL\\SalesRepDAL.csproj",
+      "packagesPath": "C:\\Users\\Andrii\\.nuget\\packages\\",
+      "outputPath": "F:\\EPAM\\SalesRep\\SalesRep\\SalesRepDAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Andrii_Letskaliuk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Andrii\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -7772,7 +7774,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
