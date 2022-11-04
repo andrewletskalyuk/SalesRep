@@ -14,6 +14,7 @@ using SalesRepDAL;
 using SalesRepDAL.Entities;
 using SalesRepDAL.Repositories;
 using SalesRepDAL.Repositories.Contracts;
+using SalesRepDAL.Seeders;
 using SalesRepServices.Services.Implementation;
 using SalesRepServices.Services.Interfaces;
 using SalesRepServices.Services_ForSalesRep;
@@ -156,7 +157,7 @@ namespace SalesRepWebApi
             });
 
             //seeder temporary method
-            //SeedDataToDB.SeedData(app.ApplicationServices);
+            SeedDataToDB.SeedData(app.ApplicationServices);
         }
     }
 }
