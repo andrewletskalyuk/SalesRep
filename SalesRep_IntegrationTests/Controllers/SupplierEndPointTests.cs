@@ -102,7 +102,7 @@ namespace SalesRep_IntegrationTests.Controllers
             };
 
             //Act
-            var result = _supplierService.Update(_mapper.Map<Supplier,SupplierModel>(modelForUpdate)).GetAwaiter().GetResult();
+            var result = _supplierService.Update(_mapper.Map<Supplier, SupplierModel>(modelForUpdate)).GetAwaiter().GetResult();
 
             //Assert
             Assert.NotNull(result);

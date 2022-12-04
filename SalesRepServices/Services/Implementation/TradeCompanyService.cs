@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using SalesRepDAL;
 using SalesRepDAL.Entities;
 using SalesRepDAL.Helpers;
 using SalesRepDAL.Repositories.Contracts;

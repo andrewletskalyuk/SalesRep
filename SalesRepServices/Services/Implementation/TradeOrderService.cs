@@ -59,12 +59,6 @@ namespace SalesRepServices.Services.Implementation
 
         public async Task<List<TradeOrderModel>> GetOrdersOfCustomer(int customerId)
         {
-            //IQueryable<TradeOrder> ordersOfCustomer = _context.TradeOrders
-            //                            .Where(x => x.CustomerID == customerId);
-
-            //working variant - same result!!!
-            //IQueryable<TradeOrder> resZ = _context.Customers.SelectMany(x => x.TradeOrders).Where(z=>z.CustomerID==customerId);
-
             if (customerId != 0)
             {
                 var orders = _tradeOrderRepository.GetOrdersOfCustomer(customerId);

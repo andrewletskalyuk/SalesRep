@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRepDAL", "SalesRepDAL\SalesRepDAL.csproj", "{518B992D-1EC4-4755-A91A-0F088E69992D}"
 EndProject
@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRepWebApi", "SalesRepW
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{61D2AF06-BDDA-4C89-B2A1-CF98E3C21E47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesRepUnitTests", "SalesRepUnitTests\SalesRepUnitTests.csproj", "{BD50CE6E-0D78-4A9C-8063-F108A528D433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRepUnitTests", "SalesRepUnitTests\SalesRepUnitTests.csproj", "{BD50CE6E-0D78-4A9C-8063-F108A528D433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesRep_IntegrationTests", "SalesRep_IntegrationTests\SalesRep_IntegrationTests.csproj", "{2AF9E5A8-D442-48B3-837A-29302CD5B315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesRep_IntegrationTests", "SalesRep_IntegrationTests\SalesRep_IntegrationTests.csproj", "{2AF9E5A8-D442-48B3-837A-29302CD5B315}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetaMicroservice", "BetaMicroservice\BetaMicroservice.csproj", "{135A57FF-BC0C-42D1-85A4-9D1F995509F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AF9E5A8-D442-48B3-837A-29302CD5B315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135A57FF-BC0C-42D1-85A4-9D1F995509F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
