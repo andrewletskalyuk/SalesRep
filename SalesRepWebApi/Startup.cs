@@ -67,7 +67,7 @@ namespace SalesRepWebApi
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             //we're using in memory database for a quick dev and testing
             services.AddDbContext<EFContext>(options =>
-                        options.UseSqlServer(connectionString));
+                        options.UseNpgsql(connectionString));
             services.AddIdentity<DbUser, DbRole>(options =>
              {
                  options.Stores.MaxLengthForKeys = 128;
